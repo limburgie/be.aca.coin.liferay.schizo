@@ -21,6 +21,7 @@ public class SchizoTemplateContextContributor implements TemplateContextContribu
 	@Reference private SchizoService schizoService;
 
 	public void prepare(Map<String, Object> contextObjects, HttpServletRequest request) {
-		contextObjects.put("personas", schizoService.getPersonas());
+		contextObjects.put("schizoPersonas", schizoService.getPersonas());
+		contextObjects.put("schizoDataContext", schizoService.getDataContext());
 	}
 }
