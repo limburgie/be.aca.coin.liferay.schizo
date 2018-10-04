@@ -1,7 +1,6 @@
 package be.aca.coin.liferay.schizo.internal.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -29,7 +28,7 @@ public class SchizoConfigurationService implements SchizoService {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		personaMap = new HashMap<>();
+		personaMap = new LinkedHashMap<>();
 
 		for (String definitionJson : ConfigurableUtil.createConfigurable(SchizoConfiguration.class, properties).personaDefinitions()) {
 			Persona persona = fromJson(new JsonParser().parse(definitionJson).getAsJsonObject());
@@ -60,5 +59,9 @@ public class SchizoConfigurationService implements SchizoService {
 		}
 
 		return persona;
+	}
+
+	public List<Persona> getPersonas() {
+		return new ArrayList<>(personaMap.values());
 	}
 }
