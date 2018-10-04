@@ -9,6 +9,8 @@ import org.osgi.service.component.annotations.Modified;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 
 import be.aca.coin.liferay.schizo.api.domain.Persona;
 import be.aca.coin.liferay.schizo.api.domain.PersonaProfile;
@@ -63,5 +65,21 @@ public class SchizoConfigurationService implements SchizoService {
 
 	public List<Persona> getPersonas() {
 		return new ArrayList<>(personaMap.values());
+	}
+
+	public JsonObject getDataContext() {
+		PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
+
+		if (!permissionChecker.isSignedIn()) {
+			return new JsonObject();
+		}
+
+		String screenName = permissionChecker.getUser().getScreenName();
+
+		try {
+			return getPersona(screenName).getDataContext();
+		} catch (NoSuchPersonaException e) {
+			return new JsonObject();
+		}
 	}
 }

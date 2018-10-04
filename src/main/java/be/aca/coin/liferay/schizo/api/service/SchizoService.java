@@ -2,6 +2,8 @@ package be.aca.coin.liferay.schizo.api.service;
 
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 import be.aca.coin.liferay.schizo.api.domain.Persona;
 import be.aca.coin.liferay.schizo.api.exception.NoSuchPersonaException;
 
@@ -17,4 +19,10 @@ public interface SchizoService {
 	 * Retrieves a list of all personas. Personas are ordered as configured.
 	 */
 	List<Persona> getPersonas();
+
+	/**
+	 * Retrieves the data context of the currently signed in persona.
+	 * If no user is signed in or if the currently signed in user is not a persona, a null object is returned.
+	 */
+	JsonObject getDataContext();
 }
