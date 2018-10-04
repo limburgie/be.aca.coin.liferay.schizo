@@ -1,4 +1,4 @@
-package be.aca.coin.liferay.schizo.internal;
+package be.aca.coin.liferay.schizo.internal.autologin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
