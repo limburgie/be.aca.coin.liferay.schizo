@@ -13,5 +13,5 @@ public interface SchizoConfiguration {
 			description = "JSON representation of a persona.",
 			required = false
 	)
-	public String[] personaDefinitions();
+	String[] personaDefinitions();
 }
