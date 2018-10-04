@@ -47,7 +47,9 @@ public class SchizoConfigurationService implements SchizoService {
 
 		PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName);
 
-		return new Persona(profile);
+		JsonObject dataContext = definitionJO.getAsJsonObject("dataContext");
+
+		return new Persona(profile, dataContext);
 	}
 
 	public Persona getPersona(String screenName) throws NoSuchPersonaException {
