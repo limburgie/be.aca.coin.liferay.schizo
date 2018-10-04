@@ -1,10 +1,10 @@
 package be.aca.coin.liferay.schizo.api.domain;
 
-public class PersonaDefinition {
+public class Persona {
 
 	private PersonaProfile profile;
 
-	public PersonaDefinition(PersonaProfile profile) {
+	public Persona(PersonaProfile profile) {
 		this.profile = profile;
 	}
 
