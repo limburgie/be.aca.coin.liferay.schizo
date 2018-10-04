@@ -36,7 +36,7 @@
 						<_plugin.jsp>com.liferay.ant.bnd.jsp.JspAnalyzerPlugin</_plugin.jsp>
 						<_metatype>*</_metatype>
 						<Export-Package>
-							be.aca.coin.liferay.schizo.api
+							be.aca.coin.liferay.schizo.api.*
 						</Export-Package>
 						<Embed-Dependency>
 							gson;runtime
