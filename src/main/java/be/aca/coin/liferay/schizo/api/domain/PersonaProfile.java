@@ -6,12 +6,14 @@ public class PersonaProfile {
 	private String emailAddress;
 	private String firstName;
 	private String lastName;
+	private String portrait;
 
-	public PersonaProfile(String screenName, String emailAddress, String firstName, String lastName) {
+	public PersonaProfile(String screenName, String emailAddress, String firstName, String lastName, String portrait) {
 		this.screenName = screenName;
 		this.emailAddress = emailAddress;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.portrait = portrait;
 	}
 
 	public String getScreenName() {
@@ -28,5 +30,9 @@ public class PersonaProfile {
 
 	public String getLastName() {
 		return lastName;
+	}
+
+	public String getPortrait() {
+		return portrait;
 	}
 }

@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.Portal;
 
 import be.aca.coin.liferay.schizo.api.domain.Persona;
@@ -26,7 +27,7 @@ public class UserHelper {
 		try {
 			return userLocalService.getUserByScreenName(companyId, persona.getProfile().getScreenName());
 		} catch (NoSuchUserException e) {
-			return userLocalService.addUser(
+			User user = userLocalService.addUser(
 					userLocalService.getDefaultUserId(companyId),
 					companyId,
 					true,
@@ -55,6 +56,12 @@ public class UserHelper {
 					false,
 					new ServiceContext()
 			);
+
+			if (persona.getProfile().getPortrait() != null) {
+				userLocalService.updatePortrait(user.getUserId(), Base64.decode(persona.getProfile().getPortrait()));
+			}
+
+			return user;
 		}
 	}
 }

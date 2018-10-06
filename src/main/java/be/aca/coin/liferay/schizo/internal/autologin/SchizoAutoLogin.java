@@ -44,8 +44,12 @@ public class SchizoAutoLogin extends BaseAutoLogin {
 			LOGGER.info(String.format("Schizo signed in with persona <%s>", persona.getProfile().getFirstName()));
 
 			return new String[] { userId, password, Boolean.toString(true) };
-		} catch (NoSuchPersonaException | PortalException e) {
-			return new String[0];
+		} catch (NoSuchPersonaException e) {
+			LOGGER.info(String.format("No persona exists with screen name <%s>", screenName));
+		} catch (PortalException e) {
+			LOGGER.error(e);
 		}
+
+		return new String[0];
 	}
 }
