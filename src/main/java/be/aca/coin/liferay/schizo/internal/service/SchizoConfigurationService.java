@@ -45,8 +45,9 @@ public class SchizoConfigurationService implements SchizoService {
 		String emailAddress = profileJO.get("emailAddress").getAsString();
 		String firstName = profileJO.get("firstName").getAsString();
 		String lastName = profileJO.get("lastName").getAsString();
+		String portrait = profileJO.has("portrait") ? profileJO.get("portrait").getAsString() : null;
 
-		PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName);
+		PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName, portrait);
 
 		JsonObject dataContext = definitionJO.getAsJsonObject("dataContext");
 
