@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.model.Portlet;
 @Component(
 		immediate = true,
 		property = {
-				"panel.category.key=" + PanelCategoryKeys.CONTROL_PANEL_CONFIGURATION,
+				"panel.category.key=" + PanelCategoryKeys.CONTROL_PANEL_USERS,
 				"service.ranking:Integer=100"
 		},
 		service = PanelApp.class

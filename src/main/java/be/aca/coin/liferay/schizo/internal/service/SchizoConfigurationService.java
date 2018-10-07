@@ -68,6 +68,10 @@ public class SchizoConfigurationService implements SchizoService {
 		return new ArrayList<>(personaMap.values());
 	}
 
+	public int getPersonasCount() {
+		return personaMap.size();
+	}
+
 	public JsonObject getDataContext() {
 		PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
 

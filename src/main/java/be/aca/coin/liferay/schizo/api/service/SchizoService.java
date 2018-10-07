@@ -21,6 +21,11 @@ public interface SchizoService {
 	List<Persona> getPersonas();
 
 	/**
+	 * Retrieves the amount of personas defined.
+	 */
+	int getPersonasCount();
+
+	/**
 	 * Retrieves the data context of the currently signed in persona.
 	 * If no user is signed in or if the currently signed in user is not a persona, a null object is returned.
 	 */

@@ -16,6 +16,10 @@ public class PersonaProfile {
 		this.portrait = portrait;
 	}
 
+	public String getFullName() {
+		return String.format("%s %s", firstName, lastName);
+	}
+
 	public String getScreenName() {
 		return screenName;
 	}
