@@ -11,5 +11,3 @@
 <liferay-theme:defineObjects/>
 
 <portlet:defineObjects/>
-
-<clay:navigation-bar inverted="${true}" navigationItems="${navItems}"/>

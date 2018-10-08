@@ -9,6 +9,7 @@ import javax.portlet.*;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
@@ -59,8 +60,20 @@ public class SchizoPortlet extends MVCPortlet {
 	public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
 		renderRequest.setAttribute("schizoService", schizoService);
 		renderRequest.setAttribute("navItems", navItems);
+		renderRequest.setAttribute("creationMenu", createCreationMenu(renderResponse));
 
 		super.doView(renderRequest, renderResponse);
+	}
+
+	private CreationMenu createCreationMenu(RenderResponse renderResponse) {
+		CreationMenu creationMenu = new CreationMenu();
+
+		creationMenu.addPrimaryDropdownItem(dropdownItem -> {
+			dropdownItem.setHref(renderResponse.createRenderURL(), "mvcRenderCommandName", "/schizo/edit_persona");
+			dropdownItem.setLabel("Add persona");
+		});
+
+		return creationMenu;
 	}
 
 	public void destroy() {

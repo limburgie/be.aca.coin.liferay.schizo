@@ -1,5 +1,14 @@
 <%@ include file="/init.jsp" %>
 
+<clay:navigation-bar inverted="${true}" navigationItems="${navItems}"/>
+
+<clay:management-toolbar
+	selectable="${false}"
+	showSearch="${false}"
+	showCreationMenu="${true}"
+	creationMenu="${creationMenu}"
+/>
+
 <div class="container-fluid-1280">
 	<div class="lfr-search-container-wrapper main-content-body">
 		<c:if test="${schizoService.personasCount > 0}">
@@ -20,7 +29,12 @@
 						</div>
 						<div class="autofit-col">
 							<h5>
-								<a href="#">
+								<portlet:renderURL var="editPersonaUrl">
+									<portlet:param name="schizo" value="${persona.profile.screenName}"/>
+									<portlet:param name="mvcRenderCommandName" value="/schizo/edit_persona"/>
+								</portlet:renderURL>
+
+								<a href="${editPersonaUrl}">
 									${persona.profile.fullName}
 								</a>
 							</h5>
