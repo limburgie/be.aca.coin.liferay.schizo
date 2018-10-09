@@ -39,10 +39,11 @@ public class SavePersonaActionCommand implements MVCActionCommand {
 		String emailAddress = actionRequest.getParameter("emailAddress");
 		String firstName = actionRequest.getParameter("firstName");
 		String lastName = actionRequest.getParameter("lastName");
+		String portrait = actionRequest.getParameter("portrait");
 
 		String dataContext = actionRequest.getParameter("dataContext");
 
-		PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName, null);
+		PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName, portrait);
 		Persona persona = new Persona(profile, new Gson().fromJson(dataContext, JsonObject.class));
 
 		try {

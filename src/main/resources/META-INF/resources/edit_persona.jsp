@@ -32,6 +32,27 @@
 							<input class="form-control" id="<portlet:namespace/>lastName" name="<portlet:namespace/>lastName" value="${editMode ? persona.getProfile().getLastName() : ''}"/>
 						</div>
 					</fieldset>
+					<fieldset class="fieldset col-md-6">
+						<div class="form-group">
+							<label class="control-label">Portrait</label>
+							<div>
+								<c:choose>
+									<c:when test="${not empty persona.profile.portrait}">
+										<img id="<portlet:namespace/>portraitImage" src="${persona.profile.portrait}" width="200"/>
+									</c:when>
+									<c:otherwise>
+										<img id="<portlet:namespace/>portraitImage" src="/image/user_male_portrait" width="200"/>
+									</c:otherwise>
+								</c:choose>
+							</div>
+							<div class="btn-group button-holder">
+								<button id="<portlet:namespace/>changePortraitButton" class="btn btn-default">Change</button>
+								<button id="<portlet:namespace/>deletePortraitButton" class="btn btn-default">Delete</button>
+							</div>
+							<input type="file" style="display: none" id="<portlet:namespace/>portraitFile" accept=".jpg, .jpeg, .png"/>
+							<input type="hidden" id="<portlet:namespace/>portrait" name="<portlet:namespace/>portrait" value="${editMode ? persona.profile.portrait : ''}"/>
+						</div>
+					</fieldset>
 				</div>
 
 				<h3 class="sheet-subtitle">Persona data context</h3>
@@ -51,7 +72,7 @@
 	</div>
 </form>
 
-<aui:script use="aui-ace-editor">
+<aui:script use="aui-ace-editor,node-event-simulate">
 	A.on("domready", function(event) {
 		var dataContext = A.one("#<portlet:namespace />dataContext");
 		var editorNode = A.one("#<portlet:namespace />dataContextRichEditor");
@@ -67,6 +88,28 @@
 
 		editor.getSession().on("change", function() {
 			dataContext.val(editor.getSession().getValue());
+		});
+
+		document.getElementById("<portlet:namespace />portraitFile").addEventListener("change", function() {
+			if (this.files && this.files[0]) {
+				var fileReader = new FileReader();
+				fileReader.addEventListener("load", function(e) {
+					document.getElementById("<portlet:namespace />portraitImage").src = e.target.result;
+					document.getElementById("<portlet:namespace />portrait").value = e.target.result;
+				});
+				fileReader.readAsDataURL(this.files[0]);
+			}
+		});
+
+		A.one("#<portlet:namespace/>changePortraitButton").on("click", function(e) {
+			A.one("#<portlet:namespace/>portraitFile").simulate("click");
+			e.preventDefault();
+		});
+
+		A.one("#<portlet:namespace/>deletePortraitButton").on("click", function(e) {
+			document.getElementById("<portlet:namespace />portraitImage").src = "/image/user_male_portrait";
+			document.getElementById("<portlet:namespace />portrait").value = "";
+			e.preventDefault();
 		});
 	});
 </aui:script>

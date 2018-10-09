@@ -19,7 +19,7 @@
 							<div class="user-icon">
 								<c:choose>
 									<c:when test="${not empty persona.profile.portrait}">
-										<img src="data:image/jpeg;base64,${persona.profile.portrait}" width="32" height="32"/>
+										<img src="${persona.profile.portrait}" width="32" height="32"/>
 									</c:when>
 									<c:otherwise>
 										<img src="/image/user_male_portrait" width="32" height="32"/>
