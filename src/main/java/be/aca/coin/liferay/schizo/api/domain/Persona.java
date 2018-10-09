@@ -1,5 +1,6 @@
 package be.aca.coin.liferay.schizo.api.domain;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 public class Persona {
@@ -18,5 +19,9 @@ public class Persona {
 
 	public JsonObject getDataContext() {
 		return dataContext;
+	}
+
+	public String getPrettyPrintedDataContext() {
+		return new GsonBuilder().setPrettyPrinting().create().toJson(dataContext);
 	}
 }
