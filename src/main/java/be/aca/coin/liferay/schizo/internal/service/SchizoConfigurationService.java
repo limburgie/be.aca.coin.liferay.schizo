@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import be.aca.coin.liferay.schizo.api.domain.Persona;
-import be.aca.coin.liferay.schizo.api.domain.PersonaProfile;
 import be.aca.coin.liferay.schizo.api.exception.CannotSavePersonaException;
 import be.aca.coin.liferay.schizo.api.exception.NoSuchPersonaException;
 import be.aca.coin.liferay.schizo.api.service.SchizoService;
@@ -43,22 +42,6 @@ public class SchizoConfigurationService implements SchizoService {
 			Persona persona = new Gson().fromJson(definitionJson, Persona.class);
 			personaMap.put(persona.getProfile().getScreenName(), persona);
 		}
-	}
-
-	private Persona fromJson(JsonObject definitionJO) {
-		JsonObject profileJO = definitionJO.getAsJsonObject("profile");
-
-		String screenName = profileJO.get("screenName").getAsString();
-		String emailAddress = profileJO.get("emailAddress").getAsString();
-		String firstName = profileJO.get("firstName").getAsString();
-		String lastName = profileJO.get("lastName").getAsString();
-		String portrait = profileJO.has("portrait") ? profileJO.get("portrait").getAsString() : null;
-
-		PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName, portrait);
-
-		JsonObject dataContext = definitionJO.getAsJsonObject("dataContext");
-
-		return new Persona(profile, dataContext);
 	}
 
 	public Persona getPersona(String screenName) throws NoSuchPersonaException {
