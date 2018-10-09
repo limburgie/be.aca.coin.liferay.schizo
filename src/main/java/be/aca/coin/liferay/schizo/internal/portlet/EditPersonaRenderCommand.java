@@ -28,22 +28,29 @@ public class EditPersonaRenderCommand implements MVCRenderCommand {
 	@Reference private SchizoService schizoService;
 
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) {
+		enableBackButton(renderRequest, renderResponse);
+
+		String screenName = renderRequest.getParameter("schizo");
+
+		try {
+			Persona persona = schizoService.getPersona(screenName);
+			renderRequest.setAttribute("persona", persona);
+			renderRequest.setAttribute("title", "Edit persona " + persona.getProfile().getFullName());
+			renderRequest.setAttribute("editMode", true);
+		} catch (NoSuchPersonaException e) {
+			renderRequest.setAttribute("persona", null);
+			renderRequest.setAttribute("title", "Add persona");
+			renderRequest.setAttribute("editMode", false);
+		}
+
+		return "/edit_persona.jsp";
+	}
+
+	private void enableBackButton(RenderRequest renderRequest, RenderResponse renderResponse) {
 		ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		portletDisplay.setShowBackIcon(true);
 		portletDisplay.setURLBack(renderResponse.createRenderURL().toString());
-
-		String screenName = renderRequest.getParameter("schizo");
-		try {
-			Persona persona = schizoService.getPersona(screenName);
-			renderRequest.setAttribute("persona", persona);
-		} catch (NoSuchPersonaException e) {
-			renderRequest.setAttribute("persona", null);
-		}
-
-		renderRequest.setAttribute("editMode", screenName != null);
-
-		return "/edit_persona.jsp";
 	}
 }
