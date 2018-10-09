@@ -1,12 +1,12 @@
 <%@ include file="/init.jsp" %>
 
-<portlet:actionURL var="savePersonaUrl"/>
+<portlet:actionURL name="/schizo/save_persona" var="savePersonaUrl"/>
 
 <form class="container-fluid-1280" method="post" action="${savePersonaUrl}">
 	<c:if test="${editMode}">
 		<input type="hidden" name="<portlet:namespace/>oldScreenName" value="${renderRequest.getParameter("schizo")}"/>
 	</c:if>
-	<textarea style="display:none" id="<portlet:namespace/>initialDataContext">${editMode ? persona.getPrettyPrintedDataContext() : ""}</textarea>
+	<textarea style="display:none" id="<portlet:namespace/>dataContext" name="<portlet:namespace/>dataContext">${editMode ? persona.getPrettyPrintedDataContext() : ""}</textarea>
 	<div class="card-horizontal main-content-card">
 		<div class="panel-group">
 			<div class="sheet">
@@ -54,15 +54,19 @@
 
 <aui:script use="aui-ace-editor">
 	A.on("domready", function(event) {
-		var initialDataContext = A.one("#<portlet:namespace />initialDataContext").val();
+		var dataContext = A.one("#<portlet:namespace />dataContext");
 		var editorNode = A.one("#<portlet:namespace />dataContextRichEditor");
 
-		new A.AceEditor({
+		var editor = new A.AceEditor({
 			boundingBox: editorNode,
 			height: 400,
 			mode: "json",
 			width: "100%",
-			value: initialDataContext
+			value: dataContext.val()
 		}).render();
+
+		editor.getSession().on("change", function() {
+			dataContext.val(editor.getSession().getValue());
+		});
 	});
 </aui:script>

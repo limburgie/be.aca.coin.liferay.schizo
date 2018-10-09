@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import be.aca.coin.liferay.schizo.api.domain.Persona;
+import be.aca.coin.liferay.schizo.api.exception.CannotSavePersonaException;
 import be.aca.coin.liferay.schizo.api.exception.NoSuchPersonaException;
 
 public interface SchizoService {
@@ -24,6 +25,11 @@ public interface SchizoService {
 	 * Retrieves the amount of personas defined.
 	 */
 	int getPersonasCount();
+
+	/**
+	 * Updates the persona with the given screen name using the given information.
+	 */
+	void savePersona(String screenName, Persona persona) throws CannotSavePersonaException;
 
 	/**
 	 * Retrieves the data context of the currently signed in persona.

@@ -13,15 +13,23 @@ public class Persona {
 		this.dataContext = dataContext;
 	}
 
+	public String getPrettyPrintedDataContext() {
+		return new GsonBuilder().setPrettyPrinting().create().toJson(dataContext);
+	}
+
 	public PersonaProfile getProfile() {
 		return profile;
+	}
+
+	public void setProfile(PersonaProfile profile) {
+		this.profile = profile;
 	}
 
 	public JsonObject getDataContext() {
 		return dataContext;
 	}
 
-	public String getPrettyPrintedDataContext() {
-		return new GsonBuilder().setPrettyPrinting().create().toJson(dataContext);
+	public void setDataContext(JsonObject dataContext) {
+		this.dataContext = dataContext;
 	}
 }
