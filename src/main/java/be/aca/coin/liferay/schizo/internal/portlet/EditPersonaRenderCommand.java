@@ -42,6 +42,7 @@ public class EditPersonaRenderCommand implements MVCRenderCommand {
 				persona.getProfile().setFirstName(renderRequest.getParameter("firstName"));
 				persona.getProfile().setLastName(renderRequest.getParameter("lastName"));
 				persona.getProfile().setPortrait(renderRequest.getParameter("portrait"));
+				persona.getProfile().setBio(renderRequest.getParameter("bio"));
 			}
 
 			renderRequest.setAttribute("persona", persona);

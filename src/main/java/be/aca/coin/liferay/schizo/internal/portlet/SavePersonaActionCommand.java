@@ -46,6 +46,7 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 		String firstName = ParamUtil.getString(actionRequest, "firstName");
 		String lastName = ParamUtil.getString(actionRequest, "lastName");
 		String portrait = ParamUtil.getString(actionRequest, "portrait");
+		String bio = ParamUtil.getString(actionRequest, "bio");
 
 		String dataContext = ParamUtil.getString(actionRequest,"dataContext", "{}");
 
@@ -55,7 +56,7 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 		}
 
 		try {
-			PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName, portrait);
+			PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName, portrait, bio);
 			Persona persona = new Persona(profile, new Gson().fromJson(dataContext, JsonObject.class));
 
 			schizoService.savePersona(oldScreenName, persona);

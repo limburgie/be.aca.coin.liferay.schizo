@@ -12,41 +12,41 @@
 <div class="container-fluid-1280">
 	<liferay-ui:success key="personaSaved" message="Persona was successfully saved."/>
 
-	<div class="lfr-search-container-wrapper main-content-body">
-		<c:if test="${schizoService.personasCount > 0}">
-			<ul class="list-group">
-				<c:forEach items="${schizoService.personas}" var="persona">
-					<li class="list-group-item list-group-item-flex">
-						<div class="autofit-col">
-							<div class="user-icon">
-								<c:choose>
-									<c:when test="${not empty persona.profile.portrait}">
-										<img src="${persona.profile.portrait}" width="32" height="32"/>
-									</c:when>
-									<c:otherwise>
-										<img src="/image/user_male_portrait" width="32" height="32"/>
-									</c:otherwise>
-								</c:choose>
+	<c:if test="${schizoService.personasCount > 0}">
+		<div class="row">
+			<c:forEach items="${schizoService.personas}" var="persona">
+				<portlet:renderURL var="editPersonaUrl">
+					<portlet:param name="schizo" value="${persona.profile.screenName}"/>
+					<portlet:param name="mvcRenderCommandName" value="/schizo/edit_persona"/>
+				</portlet:renderURL>
+
+				<div class="col-md-3">
+					<div class="card">
+						<a href="${editPersonaUrl}">
+							<c:choose>
+								<c:when test="${not empty persona.profile.portrait}">
+									<img src="${persona.profile.portrait}" width="100%"/>
+								</c:when>
+								<c:otherwise>
+									<img src="/image/user_male_portrait" width="100%"/>
+								</c:otherwise>
+							</c:choose>
+						</a>
+						<div class="card-row card-row-padded card-row-valign-top">
+							<div class="card-col-content">
+								<h2 class="text-center">
+									<a href="${editPersonaUrl}" style="color: #272833">
+										${persona.profile.firstName}
+									</a>
+								</h2>
+								<p class="lfr-card-subtitle-text">
+									${persona.profile.bio}
+								</p>
 							</div>
 						</div>
-						<div class="autofit-col">
-							<h5>
-								<portlet:renderURL var="editPersonaUrl">
-									<portlet:param name="schizo" value="${persona.profile.screenName}"/>
-									<portlet:param name="mvcRenderCommandName" value="/schizo/edit_persona"/>
-								</portlet:renderURL>
-
-								<a href="${editPersonaUrl}">
-									${persona.profile.fullName}
-								</a>
-							</h5>
-							<h6 class="text-default">
-								${persona.profile.screenName}
-							</h6>
-						</div>
-					</li>
-				</c:forEach>
-			</ul>
-		</c:if>
-	</div>
+					</div>
+				</div>
+			</c:forEach>
+		</div>
+	</c:if>
 </div>

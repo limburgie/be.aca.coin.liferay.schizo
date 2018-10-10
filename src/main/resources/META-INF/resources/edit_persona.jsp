@@ -6,7 +6,7 @@
 	<c:if test="${editMode}">
 		<input type="hidden" name="<portlet:namespace/>oldScreenName" value="${renderRequest.getParameter("schizo")}"/>
 	</c:if>
-	<textarea style="display:none" id="<portlet:namespace/>dataContext" name="<portlet:namespace/>dataContext">${editMode ? persona.getPrettyPrintedDataContext() : "{}"}</textarea>
+	<textarea style="display:none" id="<portlet:namespace/>dataContext" name="<portlet:namespace/>dataContext">${editMode ? persona.prettyPrintedDataContext : "{}"}</textarea>
 	<div class="card-horizontal main-content-card">
 		<div class="panel-group">
 			<div class="sheet">
@@ -21,19 +21,19 @@
 					<fieldset class="fieldset col-md-6">
 						<div class="form-group">
 							<label class="control-label" for="<portlet:namespace/>screenName">Screen name</label>
-							<input class="form-control" id="<portlet:namespace/>screenName" name="<portlet:namespace/>screenName" value="${editMode ? persona.getProfile().getScreenName() : ''}"/>
+							<input class="form-control" id="<portlet:namespace/>screenName" name="<portlet:namespace/>screenName" value="${editMode ? persona.profile.screenName : ''}"/>
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="<portlet:namespace/>emailAddress">Email address</label>
-							<input class="form-control" id="<portlet:namespace/>emailAddress" name="<portlet:namespace/>emailAddress" value="${editMode ? persona.getProfile().getEmailAddress() : ''}"/>
+							<input class="form-control" id="<portlet:namespace/>emailAddress" name="<portlet:namespace/>emailAddress" value="${editMode ? persona.profile.emailAddress : ''}"/>
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="<portlet:namespace/>firstName">First name</label>
-							<input class="form-control" id="<portlet:namespace/>firstName" name="<portlet:namespace/>firstName" value="${editMode ? persona.getProfile().getFirstName() : ''}"/>
+							<input class="form-control" id="<portlet:namespace/>firstName" name="<portlet:namespace/>firstName" value="${editMode ? persona.profile.firstName : ''}"/>
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="<portlet:namespace/>lastName">Last name</label>
-							<input class="form-control" id="<portlet:namespace/>lastName" name="<portlet:namespace/>lastName" value="${editMode ? persona.getProfile().getLastName() : ''}"/>
+							<input class="form-control" id="<portlet:namespace/>lastName" name="<portlet:namespace/>lastName" value="${editMode ? persona.profile.lastName : ''}"/>
 						</div>
 					</fieldset>
 					<fieldset class="fieldset col-md-6">
@@ -55,6 +55,12 @@
 							</div>
 							<input type="file" style="display: none" id="<portlet:namespace/>portraitFile" accept=".jpg, .jpeg, .png"/>
 							<input type="hidden" id="<portlet:namespace/>portrait" name="<portlet:namespace/>portrait" value="${editMode ? persona.profile.portrait : ''}"/>
+						</div>
+					</fieldset>
+					<fieldset class="fieldset col-md-12">
+						<div class="form-group">
+							<label class="control-label" for="<portlet:namespace/>bio">Bio</label>
+							<textarea class="form-control" id="<portlet:namespace/>bio" name="<portlet:namespace/>bio">${editMode ? persona.profile.bio : ''}</textarea>
 						</div>
 					</fieldset>
 				</div>

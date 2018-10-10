@@ -57,6 +57,11 @@ public class UserHelper {
 					new ServiceContext()
 			);
 
+			if (persona.getProfile().getBio() != null) {
+				user.setComments(persona.getProfile().getBio());
+				userLocalService.updateUser(user);
+			}
+
 			if (persona.getProfile().getPortraitWithoutMime() != null) {
 				userLocalService.updatePortrait(user.getUserId(), Base64.decode(persona.getProfile().getPortraitWithoutMime()));
 			}
