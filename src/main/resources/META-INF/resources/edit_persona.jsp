@@ -12,6 +12,10 @@
 			<div class="sheet">
 				<h2 class="sheet-title">${title}</h2>
 
+				<liferay-ui:error key="profileFieldsEmpty" message="Screen name, email address, first and last name should not be empty."/>
+				<liferay-ui:error key="invalidJson" message="Data context does not have a valid JSON syntax."/>
+				<liferay-ui:error key="personaNotSaved" message="Persona was not saved due to an unexpected error. Please check the logs."/>
+
 				<h3 class="sheet-subtitle">Profile information</h3>
 				<div class="row">
 					<fieldset class="fieldset col-md-6">
@@ -57,7 +61,6 @@
 
 				<h3 class="sheet-subtitle">Persona data context</h3>
 				<div class="form-group">
-					<label class="control-label" for="<portlet:namespace/>dataContext">Data context</label>
 					<div class="lfr-editor-container" id="<portlet:namespace />dataContextEditorContainer">
 						<div class="lfr-rich-editor" id="<portlet:namespace />dataContextRichEditor"></div>
 					</div>

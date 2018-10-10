@@ -9,6 +9,7 @@ import org.osgi.service.component.annotations.Reference;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import be.aca.coin.liferay.schizo.api.domain.Persona;
@@ -34,6 +35,15 @@ public class EditPersonaRenderCommand implements MVCRenderCommand {
 
 		try {
 			Persona persona = schizoService.getPersona(screenName);
+
+			if (ParamUtil.getBoolean(renderRequest, "error")) {
+				persona.getProfile().setScreenName(renderRequest.getParameter("screenName"));
+				persona.getProfile().setEmailAddress(renderRequest.getParameter("emailAddress"));
+				persona.getProfile().setFirstName(renderRequest.getParameter("firstName"));
+				persona.getProfile().setLastName(renderRequest.getParameter("lastName"));
+				persona.getProfile().setPortrait(renderRequest.getParameter("portrait"));
+			}
+
 			renderRequest.setAttribute("persona", persona);
 			renderRequest.setAttribute("title", "Edit persona " + persona.getProfile().getFullName());
 			renderRequest.setAttribute("editMode", true);

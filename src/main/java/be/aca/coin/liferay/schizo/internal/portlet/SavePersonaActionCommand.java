@@ -8,15 +8,20 @@ import org.osgi.service.component.annotations.Reference;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import be.aca.coin.liferay.schizo.api.domain.Persona;
 import be.aca.coin.liferay.schizo.api.domain.PersonaProfile;
 import be.aca.coin.liferay.schizo.api.exception.CannotSavePersonaException;
 import be.aca.coin.liferay.schizo.api.service.SchizoService;
-import be.aca.coin.liferay.schizo.internal.autologin.SchizoAutoLogin;
 
 @Component(
 		immediate = true,
@@ -26,32 +31,48 @@ import be.aca.coin.liferay.schizo.internal.autologin.SchizoAutoLogin;
 		},
 		service = MVCActionCommand.class
 )
-public class SavePersonaActionCommand implements MVCActionCommand {
+public class SavePersonaActionCommand extends BaseMVCActionCommand {
 
-	private static final Log LOGGER = LogFactoryUtil.getLog(SchizoAutoLogin.class);
+	private static final Log LOGGER = LogFactoryUtil.getLog(SavePersonaActionCommand.class);
 
 	@Reference private SchizoService schizoService;
+	@Reference private Portal portal;
 
-	public boolean processAction(ActionRequest actionRequest, ActionResponse actionResponse) {
+	protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) {
 		String oldScreenName = actionRequest.getParameter("oldScreenName");
 
-		String screenName = actionRequest.getParameter("screenName");
-		String emailAddress = actionRequest.getParameter("emailAddress");
-		String firstName = actionRequest.getParameter("firstName");
-		String lastName = actionRequest.getParameter("lastName");
-		String portrait = actionRequest.getParameter("portrait");
+		String screenName = ParamUtil.getString(actionRequest, "screenName");
+		String emailAddress = ParamUtil.getString(actionRequest, "emailAddress");
+		String firstName = ParamUtil.getString(actionRequest, "firstName");
+		String lastName = ParamUtil.getString(actionRequest, "lastName");
+		String portrait = ParamUtil.getString(actionRequest, "portrait");
 
-		String dataContext = actionRequest.getParameter("dataContext");
+		String dataContext = ParamUtil.getString(actionRequest,"dataContext", "{}");
 
-		PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName, portrait);
-		Persona persona = new Persona(profile, new Gson().fromJson(dataContext, JsonObject.class));
+		if (screenName.isEmpty() || emailAddress.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
+			error(actionRequest, actionResponse, "profileFieldsEmpty");
+			return;
+		}
 
 		try {
+			PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName, portrait);
+			Persona persona = new Persona(profile, new Gson().fromJson(dataContext, JsonObject.class));
+
 			schizoService.savePersona(oldScreenName, persona);
-			return false;
+			SessionMessages.add(actionRequest, "personaSaved");
+		} catch (JsonSyntaxException e) {
+			error(actionRequest, actionResponse, "invalidJson");
 		} catch (CannotSavePersonaException e) {
 			LOGGER.error(e);
-			return true;
+			error(actionRequest, actionResponse, "personaNotSaved");
 		}
+	}
+
+	private void error(ActionRequest actionRequest, ActionResponse actionResponse, String key) {
+		SessionErrors.add(actionRequest, key);
+
+		actionResponse.setRenderParameter("mvcRenderCommandName", "/schizo/edit_persona");
+		actionResponse.setRenderParameter("schizo", ParamUtil.getString(actionRequest, "oldScreenName"));
+		actionResponse.setRenderParameter("error", Boolean.TRUE.toString());
 	}
 }
