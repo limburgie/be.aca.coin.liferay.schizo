@@ -16,6 +16,20 @@ public class PersonaProfile {
 		this.portrait = portrait;
 	}
 
+	public String getPortraitWithoutMime() {
+		if (portrait == null) {
+			return null;
+		}
+
+		int startIndex = portrait.lastIndexOf(',');
+
+		if (startIndex == -1) {
+			return null;
+		}
+
+		return portrait.substring(startIndex + 1);
+	}
+
 	public String getFullName() {
 		return String.format("%s %s", firstName, lastName);
 	}

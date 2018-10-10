@@ -5,7 +5,7 @@
 			<li>
 				<a href="/c/portal/login?schizo=${persona.profile.screenName}">
 					<#if persona.profile.portrait??>
-						<img src="data:image/jpeg;base64,${persona.profile.portrait}" width="20" height="20"/>
+						<img src="${persona.profile.portrait}" width="20" height="20"/>
 					</#if>
 					${persona.profile.firstName}
 				</a>

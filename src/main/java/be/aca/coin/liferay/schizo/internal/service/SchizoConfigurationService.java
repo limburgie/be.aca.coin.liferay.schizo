@@ -43,12 +43,16 @@ public class SchizoConfigurationService implements SchizoService {
 	protected void activate(Map<String, Object> properties) {
 		personaMap = new LinkedHashMap<>();
 
-		for (String definitionJson : ConfigurableUtil.createConfigurable(SchizoConfiguration.class, properties).personaDefinitions()) {
-			Persona persona = new Gson().fromJson(definitionJson, Persona.class);
-			personaMap.put(persona.getProfile().getScreenName(), persona);
-		}
+		SchizoConfiguration schizoConfiguration = ConfigurableUtil.createConfigurable(SchizoConfiguration.class, properties);
 
-		dirty = false;
+		if (schizoConfiguration != null) {
+			for (String definitionJson : schizoConfiguration.personaDefinitions()) {
+				Persona persona = new Gson().fromJson(definitionJson, Persona.class);
+				personaMap.put(persona.getProfile().getScreenName(), persona);
+			}
+
+			dirty = false;
+		}
 	}
 
 	public Persona getPersona(String screenName) throws NoSuchPersonaException {
