@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 
 import be.aca.coin.liferay.schizo.api.domain.Persona;
@@ -26,13 +27,13 @@ import be.aca.coin.liferay.schizo.internal.autologin.SchizoAutoLogin;
 		},
 		service = MVCActionCommand.class
 )
-public class SavePersonaActionCommand implements MVCActionCommand {
+public class SavePersonaActionCommand extends BaseMVCActionCommand {
 
 	private static final Log LOGGER = LogFactoryUtil.getLog(SchizoAutoLogin.class);
 
 	@Reference private SchizoService schizoService;
 
-	public boolean processAction(ActionRequest actionRequest, ActionResponse actionResponse) {
+	protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) {
 		String oldScreenName = actionRequest.getParameter("oldScreenName");
 
 		String screenName = actionRequest.getParameter("screenName");
@@ -48,10 +49,8 @@ public class SavePersonaActionCommand implements MVCActionCommand {
 
 		try {
 			schizoService.savePersona(oldScreenName, persona);
-			return false;
 		} catch (CannotSavePersonaException e) {
 			LOGGER.error(e);
-			return true;
 		}
 	}
 }

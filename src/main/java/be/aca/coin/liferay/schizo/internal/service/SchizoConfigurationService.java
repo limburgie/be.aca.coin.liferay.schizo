@@ -10,6 +10,8 @@ import org.osgi.service.component.annotations.Reference;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -29,9 +31,12 @@ import be.aca.coin.liferay.schizo.internal.configuration.SchizoConfiguration;
 )
 public class SchizoConfigurationService implements SchizoService {
 
+	private static final Log LOGGER = LogFactoryUtil.getLog(SchizoConfigurationService.class);
+
 	@Reference private ConfigurationProvider configurationProvider;
 
 	private Map<String, Persona> personaMap;
+	private boolean dirty;
 
 	@Activate
 	@Modified
@@ -42,6 +47,8 @@ public class SchizoConfigurationService implements SchizoService {
 			Persona persona = new Gson().fromJson(definitionJson, Persona.class);
 			personaMap.put(persona.getProfile().getScreenName(), persona);
 		}
+
+		dirty = false;
 	}
 
 	public Persona getPersona(String screenName) throws NoSuchPersonaException {
@@ -68,6 +75,21 @@ public class SchizoConfigurationService implements SchizoService {
 		personaMap.put(screenName, persona);
 
 		savePersonaMap(personaMap);
+
+		dirty = true;
+
+		waitForConfigurationUpdate();
+	}
+
+	private void waitForConfigurationUpdate() {
+		while(dirty) {
+			try {
+				Thread.sleep(100);
+				LOGGER.debug("Waiting for configuration to be updated");
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	private void savePersonaMap(Map<String, Persona> personaMap) throws CannotSavePersonaException {
