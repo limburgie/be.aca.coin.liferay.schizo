@@ -25,6 +25,7 @@ import be.aca.coin.liferay.schizo.api.service.SchizoService;
 				"com.liferay.portlet.display-category=category.hidden",
 				"javax.portlet.display-name=Schizo",
 				"javax.portlet.init-param.view-template=/view.jsp",
+				"javax.portlet.init-param.copy-request-parameters=true",
 				"javax.portlet.name=" + SchizoPortletConstants.PORTLET_NAME,
 				"javax.portlet.resource-bundle=content.Language",
 				"javax.portlet.security-role-ref=administrator",

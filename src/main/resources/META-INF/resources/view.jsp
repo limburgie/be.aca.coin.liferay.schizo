@@ -10,6 +10,8 @@
 />
 
 <div class="container-fluid-1280">
+	<liferay-ui:success key="personaSaved" message="Persona was successfully saved."/>
+
 	<div class="lfr-search-container-wrapper main-content-body">
 		<c:if test="${schizoService.personasCount > 0}">
 			<ul class="list-group">
