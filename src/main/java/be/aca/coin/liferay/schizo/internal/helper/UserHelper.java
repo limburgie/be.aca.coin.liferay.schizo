@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.Portal;
 
-import be.aca.coin.liferay.schizo.api.domain.Persona;
+import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
 
 @Component(immediate = true, service = UserHelper.class)
 public class UserHelper {
@@ -21,11 +21,11 @@ public class UserHelper {
 	@Reference private Portal portal;
 	@Reference private UserLocalService userLocalService;
 
-	public User getOrCreateUser(HttpServletRequest request, Persona persona) throws PortalException {
+	public User getOrCreateUser(HttpServletRequest request, PersonaDefinition persona) throws PortalException {
 		long companyId = portal.getCompanyId(request);
 
 		try {
-			return userLocalService.getUserByScreenName(companyId, persona.getProfile().getScreenName());
+			return userLocalService.getUserByScreenName(companyId, persona.getScreenName());
 		} catch (NoSuchUserException e) {
 			User user = userLocalService.addUser(
 					userLocalService.getDefaultUserId(companyId),
@@ -34,14 +34,14 @@ public class UserHelper {
 					null,
 					null,
 					false,
-					persona.getProfile().getScreenName(),
-					persona.getProfile().getEmailAddress(),
+					persona.getScreenName(),
+					persona.getEmailAddress(),
 					0,
 					null,
 					portal.getCompany(request).getLocale(),
-					persona.getProfile().getFirstName(),
+					persona.getFirstName(),
 					null,
-					persona.getProfile().getLastName(),
+					persona.getLastName(),
 					0,
 					0,
 					true,
@@ -57,13 +57,13 @@ public class UserHelper {
 					new ServiceContext()
 			);
 
-			if (persona.getProfile().getBio() != null) {
-				user.setComments(persona.getProfile().getBio());
+			if (persona.getBio() != null) {
+				user.setComments(persona.getBio());
 				userLocalService.updateUser(user);
 			}
 
-			if (persona.getProfile().getPortraitWithoutMime() != null) {
-				userLocalService.updatePortrait(user.getUserId(), Base64.decode(persona.getProfile().getPortraitWithoutMime()));
+			if (persona.getPortraitWithoutMime() != null) {
+				userLocalService.updatePortrait(user.getUserId(), Base64.decode(persona.getPortraitWithoutMime()));
 			}
 
 			return user;

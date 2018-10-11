@@ -3,11 +3,11 @@
     <ul>
         <#items as persona>
 			<li>
-				<a href="/c/portal/login?schizo=${persona.profile.screenName}">
-					<#if persona.profile.portrait??>
-						<img src="${persona.profile.portrait}" width="20" height="20"/>
+				<a href="${persona.loginUrl}">
+					<#if persona.portrait??>
+						<img src="${persona.portrait}" width="20" height="20"/>
 					</#if>
-					${persona.profile.firstName}
+					${persona.firstName}
 				</a>
 			</li>
 		</#items>
@@ -18,5 +18,5 @@
 
 <h3>Current persona's data context</h3>
 <pre>
-	${schizoDataContext}
+	${schizoDataContext!""}
 </pre>

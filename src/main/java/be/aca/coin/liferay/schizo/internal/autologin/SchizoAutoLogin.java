@@ -13,9 +13,9 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auto.login.AutoLogin;
 import com.liferay.portal.kernel.security.auto.login.BaseAutoLogin;
 
-import be.aca.coin.liferay.schizo.api.domain.Persona;
-import be.aca.coin.liferay.schizo.api.exception.NoSuchPersonaException;
-import be.aca.coin.liferay.schizo.api.service.SchizoService;
+import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
+import be.aca.coin.liferay.schizo.internal.store.PersonaStore;
+import be.aca.coin.liferay.schizo.internal.store.exception.NoSuchPersonaException;
 import be.aca.coin.liferay.schizo.internal.helper.UserHelper;
 
 @Component(
@@ -24,24 +24,28 @@ import be.aca.coin.liferay.schizo.internal.helper.UserHelper;
 )
 public class SchizoAutoLogin extends BaseAutoLogin {
 
-	private static final String SCHIZO_PARAMETER_NAME = "schizo";
+	public static final String SCHIZO_PARAMETER_NAME = "schizo";
 	private static final Log LOGGER = LogFactoryUtil.getLog(SchizoAutoLogin.class);
 
 	@Reference private UserHelper userHelper;
-	@Reference private SchizoService schizoService;
+	@Reference private PersonaStore personaStore;
 
 	protected String[] doLogin(HttpServletRequest request, HttpServletResponse response) {
 		String screenName = request.getParameter(SCHIZO_PARAMETER_NAME);
 
+		if (screenName == null) {
+			return new String[0];
+		}
+
 		try {
-			Persona persona = schizoService.getPersona(screenName);
+			PersonaDefinition persona = personaStore.getPersona(screenName);
 
 			User user = userHelper.getOrCreateUser(request, persona);
 
 			String userId = String.valueOf(user.getUserId());
 			String password = user.getPassword();
 
-			LOGGER.info(String.format("Schizo signed in with persona <%s>", persona.getProfile().getFirstName()));
+			LOGGER.info(String.format("Schizo signed in with persona <%s>", persona.getFirstName()));
 
 			return new String[] { userId, password, Boolean.toString(true) };
 		} catch (NoSuchPersonaException e) {

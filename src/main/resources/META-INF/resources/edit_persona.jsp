@@ -21,19 +21,19 @@
 					<fieldset class="fieldset col-md-6">
 						<div class="form-group">
 							<label class="control-label" for="<portlet:namespace/>screenName">Screen name</label>
-							<input class="form-control" id="<portlet:namespace/>screenName" name="<portlet:namespace/>screenName" value="${editMode ? persona.profile.screenName : ''}"/>
+							<input class="form-control" id="<portlet:namespace/>screenName" name="<portlet:namespace/>screenName" value="${editMode ? persona.screenName : ''}"/>
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="<portlet:namespace/>emailAddress">Email address</label>
-							<input class="form-control" id="<portlet:namespace/>emailAddress" name="<portlet:namespace/>emailAddress" value="${editMode ? persona.profile.emailAddress : ''}"/>
+							<input class="form-control" id="<portlet:namespace/>emailAddress" name="<portlet:namespace/>emailAddress" value="${editMode ? persona.emailAddress : ''}"/>
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="<portlet:namespace/>firstName">First name</label>
-							<input class="form-control" id="<portlet:namespace/>firstName" name="<portlet:namespace/>firstName" value="${editMode ? persona.profile.firstName : ''}"/>
+							<input class="form-control" id="<portlet:namespace/>firstName" name="<portlet:namespace/>firstName" value="${editMode ? persona.firstName : ''}"/>
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="<portlet:namespace/>lastName">Last name</label>
-							<input class="form-control" id="<portlet:namespace/>lastName" name="<portlet:namespace/>lastName" value="${editMode ? persona.profile.lastName : ''}"/>
+							<input class="form-control" id="<portlet:namespace/>lastName" name="<portlet:namespace/>lastName" value="${editMode ? persona.lastName : ''}"/>
 						</div>
 					</fieldset>
 					<fieldset class="fieldset col-md-6">
@@ -41,8 +41,8 @@
 							<label class="control-label">Portrait</label>
 							<div>
 								<c:choose>
-									<c:when test="${not empty persona.profile.portrait}">
-										<img id="<portlet:namespace/>portraitImage" src="${persona.profile.portrait}" width="200"/>
+									<c:when test="${not empty persona.portrait}">
+										<img id="<portlet:namespace/>portraitImage" src="${persona.portrait}" width="200"/>
 									</c:when>
 									<c:otherwise>
 										<img id="<portlet:namespace/>portraitImage" src="/image/user_male_portrait" width="200"/>
@@ -54,13 +54,13 @@
 								<button id="<portlet:namespace/>deletePortraitButton" class="btn btn-default">Delete</button>
 							</div>
 							<input type="file" style="display: none" id="<portlet:namespace/>portraitFile" accept=".jpg, .jpeg, .png"/>
-							<input type="hidden" id="<portlet:namespace/>portrait" name="<portlet:namespace/>portrait" value="${editMode ? persona.profile.portrait : ''}"/>
+							<input type="hidden" id="<portlet:namespace/>portrait" name="<portlet:namespace/>portrait" value="${editMode ? persona.portrait : ''}"/>
 						</div>
 					</fieldset>
 					<fieldset class="fieldset col-md-12">
 						<div class="form-group">
 							<label class="control-label" for="<portlet:namespace/>bio">Bio</label>
-							<textarea class="form-control" id="<portlet:namespace/>bio" name="<portlet:namespace/>bio">${editMode ? persona.profile.bio : ''}</textarea>
+							<textarea class="form-control" id="<portlet:namespace/>bio" name="<portlet:namespace/>bio">${editMode ? persona.bio : ''}</textarea>
 						</div>
 					</fieldset>
 				</div>

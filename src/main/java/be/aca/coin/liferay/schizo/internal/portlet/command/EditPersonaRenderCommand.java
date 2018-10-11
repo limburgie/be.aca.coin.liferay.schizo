@@ -1,4 +1,4 @@
-package be.aca.coin.liferay.schizo.internal.portlet;
+package be.aca.coin.liferay.schizo.internal.portlet.command;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -12,9 +12,10 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import be.aca.coin.liferay.schizo.api.domain.Persona;
-import be.aca.coin.liferay.schizo.api.exception.NoSuchPersonaException;
-import be.aca.coin.liferay.schizo.api.service.SchizoService;
+import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
+import be.aca.coin.liferay.schizo.internal.portlet.SchizoPortletConstants;
+import be.aca.coin.liferay.schizo.internal.store.PersonaStore;
+import be.aca.coin.liferay.schizo.internal.store.exception.NoSuchPersonaException;
 
 @Component(
 		immediate = true,
@@ -26,7 +27,7 @@ import be.aca.coin.liferay.schizo.api.service.SchizoService;
 )
 public class EditPersonaRenderCommand implements MVCRenderCommand {
 
-	@Reference private SchizoService schizoService;
+	@Reference private PersonaStore personaStore;
 
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) {
 		enableBackButton(renderRequest, renderResponse);
@@ -34,19 +35,19 @@ public class EditPersonaRenderCommand implements MVCRenderCommand {
 		String screenName = renderRequest.getParameter("schizo");
 
 		try {
-			Persona persona = schizoService.getPersona(screenName);
+			PersonaDefinition persona = personaStore.getPersona(screenName);
 
 			if (ParamUtil.getBoolean(renderRequest, "error")) {
-				persona.getProfile().setScreenName(renderRequest.getParameter("screenName"));
-				persona.getProfile().setEmailAddress(renderRequest.getParameter("emailAddress"));
-				persona.getProfile().setFirstName(renderRequest.getParameter("firstName"));
-				persona.getProfile().setLastName(renderRequest.getParameter("lastName"));
-				persona.getProfile().setPortrait(renderRequest.getParameter("portrait"));
-				persona.getProfile().setBio(renderRequest.getParameter("bio"));
+				persona.setScreenName(renderRequest.getParameter("screenName"));
+				persona.setEmailAddress(renderRequest.getParameter("emailAddress"));
+				persona.setFirstName(renderRequest.getParameter("firstName"));
+				persona.setLastName(renderRequest.getParameter("lastName"));
+				persona.setPortrait(renderRequest.getParameter("portrait"));
+				persona.setBio(renderRequest.getParameter("bio"));
 			}
 
 			renderRequest.setAttribute("persona", persona);
-			renderRequest.setAttribute("title", "Edit persona " + persona.getProfile().getFullName());
+			renderRequest.setAttribute("title", "Edit persona " + persona.getFirstName());
 			renderRequest.setAttribute("editMode", true);
 		} catch (NoSuchPersonaException e) {
 			renderRequest.setAttribute("persona", null);

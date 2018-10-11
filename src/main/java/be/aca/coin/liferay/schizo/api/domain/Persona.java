@@ -1,35 +1,32 @@
 package be.aca.coin.liferay.schizo.api.domain;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-
 public class Persona {
 
-	private PersonaProfile profile;
-	private JsonObject dataContext;
+	private String firstName;
+	private String portrait;
+	private String bio;
+	private String loginUrl;
 
-	public Persona(PersonaProfile profile, JsonObject dataContext) {
-		this.profile = profile;
-		this.dataContext = dataContext;
+	public Persona(String firstName, String portrait, String bio, String loginUrl) {
+		this.firstName = firstName;
+		this.portrait = portrait;
+		this.bio = bio;
+		this.loginUrl = loginUrl;
 	}
 
-	public String getPrettyPrintedDataContext() {
-		return new GsonBuilder().setPrettyPrinting().create().toJson(dataContext);
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public PersonaProfile getProfile() {
-		return profile;
+	public String getPortrait() {
+		return portrait;
 	}
 
-	public void setProfile(PersonaProfile profile) {
-		this.profile = profile;
+	public String getBio() {
+		return bio;
 	}
 
-	public JsonObject getDataContext() {
-		return dataContext;
-	}
-
-	public void setDataContext(JsonObject dataContext) {
-		this.dataContext = dataContext;
+	public String getLoginUrl() {
+		return loginUrl;
 	}
 }

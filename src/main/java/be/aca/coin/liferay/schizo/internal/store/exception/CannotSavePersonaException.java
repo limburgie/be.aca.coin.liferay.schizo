@@ -1,4 +1,4 @@
-package be.aca.coin.liferay.schizo.api.exception;
+package be.aca.coin.liferay.schizo.internal.store.exception;
 
 public class CannotSavePersonaException extends Exception {
 

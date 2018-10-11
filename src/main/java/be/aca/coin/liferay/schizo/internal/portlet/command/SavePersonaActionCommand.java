@@ -1,4 +1,4 @@
-package be.aca.coin.liferay.schizo.internal.portlet;
+package be.aca.coin.liferay.schizo.internal.portlet.command;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -18,10 +18,10 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 
-import be.aca.coin.liferay.schizo.api.domain.Persona;
-import be.aca.coin.liferay.schizo.api.domain.PersonaProfile;
-import be.aca.coin.liferay.schizo.api.exception.CannotSavePersonaException;
-import be.aca.coin.liferay.schizo.api.service.SchizoService;
+import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
+import be.aca.coin.liferay.schizo.internal.portlet.SchizoPortletConstants;
+import be.aca.coin.liferay.schizo.internal.store.PersonaStore;
+import be.aca.coin.liferay.schizo.internal.store.exception.CannotSavePersonaException;
 
 @Component(
 		immediate = true,
@@ -35,7 +35,7 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 
 	private static final Log LOGGER = LogFactoryUtil.getLog(SavePersonaActionCommand.class);
 
-	@Reference private SchizoService schizoService;
+	@Reference private PersonaStore personaStore;
 	@Reference private Portal portal;
 
 	protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) {
@@ -56,10 +56,17 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 		}
 
 		try {
-			PersonaProfile profile = new PersonaProfile(screenName, emailAddress, firstName, lastName, portrait, bio);
-			Persona persona = new Persona(profile, new Gson().fromJson(dataContext, JsonObject.class));
+			PersonaDefinition persona = new PersonaDefinition();
 
-			schizoService.savePersona(oldScreenName, persona);
+			persona.setScreenName(screenName);
+			persona.setEmailAddress(emailAddress);
+			persona.setFirstName(firstName);
+			persona.setLastName(lastName);
+			persona.setPortrait(portrait);
+			persona.setBio(bio);
+			persona.setDataContext(new Gson().fromJson(dataContext, JsonObject.class));
+
+			personaStore.savePersona(oldScreenName, persona);
 			SessionMessages.add(actionRequest, "personaSaved");
 		} catch (JsonSyntaxException e) {
 			error(actionRequest, actionResponse, "invalidJson");
