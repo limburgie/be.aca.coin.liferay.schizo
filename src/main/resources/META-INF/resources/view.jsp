@@ -9,7 +9,7 @@
 	creationMenu="${creationMenu}"
 />
 
-<div class="container-fluid-1280">
+<div class="container">
 	<liferay-ui:success key="personaSaved" message="Persona was successfully saved."/>
 
 	<c:if test="${schizoService.personasCount > 0}">
@@ -20,7 +20,7 @@
 					<portlet:param name="mvcRenderCommandName" value="/schizo/edit_persona"/>
 				</portlet:renderURL>
 
-				<div class="col-md-3">
+				<div class="col-lg-3 col-md-4 col-sm-6">
 					<div class="card">
 						<a href="${editPersonaUrl}">
 							<c:choose>
