@@ -1,6 +1,9 @@
-package be.aca.coin.liferay.schizo.api.domain;
+package be.aca.coin.liferay.schizo.internal.domain;
 
-public class PersonaProfile {
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
+public class PersonaDefinition {
 
 	private String screenName;
 	private String emailAddress;
@@ -8,15 +11,7 @@ public class PersonaProfile {
 	private String lastName;
 	private String portrait;
 	private String bio;
-
-	public PersonaProfile(String screenName, String emailAddress, String firstName, String lastName, String portrait, String bio) {
-		this.screenName = screenName;
-		this.emailAddress = emailAddress;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.portrait = portrait;
-		this.bio = bio;
-	}
+	private JsonObject dataContext;
 
 	public String getPortraitWithoutMime() {
 		if (portrait == null) {
@@ -32,8 +27,8 @@ public class PersonaProfile {
 		return portrait.substring(startIndex + 1);
 	}
 
-	public String getFullName() {
-		return String.format("%s %s", firstName, lastName);
+	public String getPrettyPrintedDataContext() {
+		return new GsonBuilder().setPrettyPrinting().create().toJson(dataContext);
 	}
 
 	public String getScreenName() {
@@ -82,5 +77,13 @@ public class PersonaProfile {
 
 	public void setBio(String bio) {
 		this.bio = bio;
+	}
+
+	public JsonObject getDataContext() {
+		return dataContext;
+	}
+
+	public void setDataContext(JsonObject dataContext) {
+		this.dataContext = dataContext;
 	}
 }

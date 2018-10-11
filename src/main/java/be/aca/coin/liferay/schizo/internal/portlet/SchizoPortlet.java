@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 
-import be.aca.coin.liferay.schizo.api.service.SchizoService;
+import be.aca.coin.liferay.schizo.internal.store.PersonaStore;
 
 @Component(
 		immediate = true,
@@ -35,7 +35,7 @@ import be.aca.coin.liferay.schizo.api.service.SchizoService;
 )
 public class SchizoPortlet extends MVCPortlet {
 
-	@Reference private SchizoService schizoService;
+	@Reference private PersonaStore personaStore;
 
 	private List<NavigationItem> navItems;
 
@@ -59,22 +59,33 @@ public class SchizoPortlet extends MVCPortlet {
 	}
 
 	public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
-		renderRequest.setAttribute("schizoService", schizoService);
+		PortletURL addPersonaUrl = createAddPersonaUrl(renderResponse);
+
+		renderRequest.setAttribute("personaStore", personaStore);
 		renderRequest.setAttribute("navItems", navItems);
-		renderRequest.setAttribute("creationMenu", createCreationMenu(renderResponse));
+		renderRequest.setAttribute("addPersonaUrl", addPersonaUrl);
+		renderRequest.setAttribute("creationMenu", createCreationMenu(addPersonaUrl));
 
 		super.doView(renderRequest, renderResponse);
 	}
 
-	private CreationMenu createCreationMenu(RenderResponse renderResponse) {
+	private CreationMenu createCreationMenu(PortletURL addPersonaUrl) {
 		CreationMenu creationMenu = new CreationMenu();
 
 		creationMenu.addPrimaryDropdownItem(dropdownItem -> {
-			dropdownItem.setHref(renderResponse.createRenderURL(), "mvcRenderCommandName", "/schizo/edit_persona");
+			dropdownItem.setHref(addPersonaUrl.toString());
 			dropdownItem.setLabel("Add persona");
 		});
 
 		return creationMenu;
+	}
+
+	private PortletURL createAddPersonaUrl(RenderResponse renderResponse) {
+		PortletURL result = renderResponse.createRenderURL();
+
+		result.setParameter("mvcRenderCommandName", "/schizo/edit_persona");
+
+		return result;
 	}
 
 	public void destroy() {

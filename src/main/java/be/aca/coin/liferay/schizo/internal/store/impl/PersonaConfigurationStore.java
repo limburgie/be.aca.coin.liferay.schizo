@@ -1,4 +1,4 @@
-package be.aca.coin.liferay.schizo.internal.service;
+package be.aca.coin.liferay.schizo.internal.store.impl;
 
 import java.util.*;
 
@@ -8,34 +8,31 @@ import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
-import be.aca.coin.liferay.schizo.api.domain.Persona;
-import be.aca.coin.liferay.schizo.api.exception.CannotSavePersonaException;
-import be.aca.coin.liferay.schizo.api.exception.NoSuchPersonaException;
-import be.aca.coin.liferay.schizo.api.service.SchizoService;
 import be.aca.coin.liferay.schizo.internal.configuration.SchizoConfiguration;
+import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
+import be.aca.coin.liferay.schizo.internal.store.PersonaStore;
+import be.aca.coin.liferay.schizo.internal.store.exception.CannotSavePersonaException;
+import be.aca.coin.liferay.schizo.internal.store.exception.NoSuchPersonaException;
 
 @Component(
 		immediate = true,
-		service = SchizoService.class,
+		service = PersonaStore.class,
 		configurationPid = "be.aca.coin.liferay.schizo.internal.configuration.SchizoConfiguration"
 )
-public class SchizoConfigurationService implements SchizoService {
+public class PersonaConfigurationStore implements PersonaStore {
 
-	private static final Log LOGGER = LogFactoryUtil.getLog(SchizoConfigurationService.class);
+	private static final Log LOGGER = LogFactoryUtil.getLog(PersonaConfigurationStore.class);
 
 	@Reference private ConfigurationProvider configurationProvider;
 
-	private Map<String, Persona> personaMap;
+	private Map<String, PersonaDefinition> personaMap;
 	private boolean dirty;
 
 	@Activate
@@ -47,16 +44,22 @@ public class SchizoConfigurationService implements SchizoService {
 
 		if (schizoConfiguration != null) {
 			for (String definitionJson : schizoConfiguration.personaDefinitions()) {
-				Persona persona = new Gson().fromJson(definitionJson, Persona.class);
-				personaMap.put(persona.getProfile().getScreenName(), persona);
+				if (definitionJson != null && !definitionJson.isEmpty()) {
+					PersonaDefinition personaDefinition = new Gson().fromJson(definitionJson, PersonaDefinition.class);
+					personaMap.put(personaDefinition.getScreenName(), personaDefinition);
+				}
 			}
 
 			dirty = false;
 		}
 	}
 
-	public Persona getPersona(String screenName) throws NoSuchPersonaException {
-		Persona persona = personaMap.get(screenName);
+	public List<PersonaDefinition> getPersonas() {
+		return new ArrayList<>(personaMap.values());
+	}
+
+	public PersonaDefinition getPersona(String screenName) throws NoSuchPersonaException {
+		PersonaDefinition persona = personaMap.get(screenName);
 
 		if (persona == null) {
 			throw new NoSuchPersonaException();
@@ -65,16 +68,8 @@ public class SchizoConfigurationService implements SchizoService {
 		return persona;
 	}
 
-	public List<Persona> getPersonas() {
-		return new ArrayList<>(personaMap.values());
-	}
-
-	public int getPersonasCount() {
-		return personaMap.size();
-	}
-
-	public void savePersona(String screenName, Persona persona) throws CannotSavePersonaException {
-		Map<String, Persona> personaMap = new LinkedHashMap<>(this.personaMap);
+	public void savePersona(String screenName, PersonaDefinition persona) throws CannotSavePersonaException {
+		Map<String, PersonaDefinition> personaMap = new LinkedHashMap<>(this.personaMap);
 
 		personaMap.put(screenName, persona);
 
@@ -96,12 +91,12 @@ public class SchizoConfigurationService implements SchizoService {
 		}
 	}
 
-	private void savePersonaMap(Map<String, Persona> personaMap) throws CannotSavePersonaException {
+	private void savePersonaMap(Map<String, PersonaDefinition> personaMap) throws CannotSavePersonaException {
 		String[] personaDefinitions = new String[0];
 
 		Gson gson = new Gson();
 
-		for (Persona persona : personaMap.values()) {
+		for (PersonaDefinition persona : personaMap.values()) {
 			personaDefinitions = ArrayUtil.append(personaDefinitions, gson.toJson(persona));
 		}
 
@@ -112,22 +107,6 @@ public class SchizoConfigurationService implements SchizoService {
 			configurationProvider.saveSystemConfiguration(SchizoConfiguration.class, properties);
 		} catch (ConfigurationException e) {
 			throw new CannotSavePersonaException(e);
-		}
-	}
-
-	public JsonObject getDataContext() {
-		PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
-
-		if (!permissionChecker.isSignedIn()) {
-			return new JsonObject();
-		}
-
-		String screenName = permissionChecker.getUser().getScreenName();
-
-		try {
-			return getPersona(screenName).getDataContext();
-		} catch (NoSuchPersonaException e) {
-			return new JsonObject();
 		}
 	}
 }

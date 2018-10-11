@@ -9,7 +9,7 @@ import org.osgi.service.component.annotations.Reference;
 
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 
-import be.aca.coin.liferay.schizo.api.service.SchizoService;
+import be.aca.coin.liferay.schizo.api.service.Schizo;
 
 @Component(
 		immediate = true,
@@ -18,10 +18,10 @@ import be.aca.coin.liferay.schizo.api.service.SchizoService;
 )
 public class SchizoTemplateContextContributor implements TemplateContextContributor {
 
-	@Reference private SchizoService schizoService;
+	@Reference private Schizo schizo;
 
 	public void prepare(Map<String, Object> contextObjects, HttpServletRequest request) {
-		contextObjects.put("schizoPersonas", schizoService.getPersonas());
-		contextObjects.put("schizoDataContext", schizoService.getDataContext());
+		contextObjects.put("schizoPersonas", schizo.getPersonas());
+		contextObjects.put("schizoDataContext", schizo.getDataContext());
 	}
 }
