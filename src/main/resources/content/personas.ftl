@@ -17,6 +17,4 @@
 <p>or <a href="/c/portal/logout">sign out</a>.</p>
 
 <h3>Current persona's data context</h3>
-<pre>
-	${schizoDataContext!""}
-</pre>
+<pre>${schizoDataContext!""}</pre>
