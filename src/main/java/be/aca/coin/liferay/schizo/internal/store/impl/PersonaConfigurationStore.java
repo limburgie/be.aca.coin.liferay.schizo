@@ -68,6 +68,10 @@ public class PersonaConfigurationStore implements PersonaStore {
 		return persona;
 	}
 
+	public boolean hasPersona(String screenName) {
+		return personaMap.containsKey(screenName);
+	}
+
 	public void savePersona(String screenName, PersonaDefinition persona) throws CannotSavePersonaException {
 		Map<String, PersonaDefinition> personaMap = new LinkedHashMap<>(this.personaMap);
 
