@@ -1,8 +1,6 @@
 package be.aca.coin.liferay.schizo.internal.helper;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -84,11 +82,13 @@ public class UserHelper {
 	private long[] getGroupIds(List<String> siteNames, long companyId) {
 		long[] result = new long[0];
 
-		for (String siteName : siteNames) {
-			try {
-				result = ArrayUtil.append(result, groupLocalService.getGroup(companyId, siteName).getGroupId());
-			} catch (PortalException e) {
-				LOGGER.error(e);
+		if (siteNames != null) {
+			for (String siteName : siteNames) {
+				try {
+					result = ArrayUtil.append(result, groupLocalService.getGroup(companyId, siteName).getGroupId());
+				} catch (PortalException e) {
+					LOGGER.error(e);
+				}
 			}
 		}
 
