@@ -1,5 +1,7 @@
 package be.aca.coin.liferay.schizo.internal.portlet.command;
 
+import java.util.Arrays;
+
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -44,6 +46,7 @@ public class EditPersonaRenderCommand implements MVCRenderCommand {
 				persona.setLastName(renderRequest.getParameter("lastName"));
 				persona.setPortrait(renderRequest.getParameter("portrait"));
 				persona.setBio(renderRequest.getParameter("bio"));
+				persona.setSites(Arrays.asList(renderRequest.getParameter("sites").split(",")));
 			}
 
 			renderRequest.setAttribute("persona", persona);

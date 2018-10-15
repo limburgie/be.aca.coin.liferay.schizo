@@ -1,5 +1,9 @@
 package be.aca.coin.liferay.schizo.internal.helper;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
@@ -7,9 +11,13 @@ import org.osgi.service.component.annotations.Reference;
 
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.Portal;
 
@@ -18,8 +26,11 @@ import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
 @Component(immediate = true, service = UserHelper.class)
 public class UserHelper {
 
+	private static final Log LOGGER = LogFactoryUtil.getLog(UserHelper.class);
+
 	@Reference private Portal portal;
 	@Reference private UserLocalService userLocalService;
+	@Reference private GroupLocalService groupLocalService;
 
 	public User getOrCreateUser(HttpServletRequest request, PersonaDefinition persona) throws PortalException {
 		long companyId = portal.getCompanyId(request);
@@ -49,7 +60,7 @@ public class UserHelper {
 					1,
 					1970,
 					null,
-					new long[0],
+					getGroupIds(persona.getSites(), companyId),
 					new long[0],
 					new long[0],
 					new long[0],
@@ -68,5 +79,19 @@ public class UserHelper {
 
 			return user;
 		}
+	}
+
+	private long[] getGroupIds(List<String> siteNames, long companyId) {
+		long[] result = new long[0];
+
+		for (String siteName : siteNames) {
+			try {
+				result = ArrayUtil.append(result, groupLocalService.getGroup(companyId, siteName).getGroupId());
+			} catch (PortalException e) {
+				LOGGER.error(e);
+			}
+		}
+
+		return result;
 	}
 }

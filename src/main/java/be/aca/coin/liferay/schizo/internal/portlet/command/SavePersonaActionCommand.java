@@ -1,5 +1,8 @@
 package be.aca.coin.liferay.schizo.internal.portlet.command;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
@@ -47,6 +50,7 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 		String lastName = ParamUtil.getString(actionRequest, "lastName");
 		String portrait = ParamUtil.getString(actionRequest, "portrait");
 		String bio = ParamUtil.getString(actionRequest, "bio");
+		List<String> sites = Arrays.asList(ParamUtil.getString(actionRequest, "sites").split(","));
 
 		String dataContext = ParamUtil.getString(actionRequest,"dataContext", "{}");
 
@@ -64,6 +68,7 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 			persona.setLastName(lastName);
 			persona.setPortrait(portrait);
 			persona.setBio(bio);
+			persona.setSites(sites);
 			persona.setDataContext(new Gson().fromJson(dataContext, JsonObject.class));
 
 			personaStore.savePersona(oldScreenName, persona);
