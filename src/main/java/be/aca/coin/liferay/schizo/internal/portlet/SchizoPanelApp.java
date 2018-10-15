@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.model.Portlet;
 		immediate = true,
 		property = {
 				"panel.category.key=" + PanelCategoryKeys.CONTROL_PANEL_USERS,
-				"store.ranking:Integer=100"
+				"panel.app.order:Integer=150"
 		},
 		service = PanelApp.class
 )
