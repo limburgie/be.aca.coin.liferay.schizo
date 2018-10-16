@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 
+import be.aca.coin.liferay.schizo.api.service.Schizo;
 import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
 import be.aca.coin.liferay.schizo.internal.portlet.SchizoPortletConstants;
 import be.aca.coin.liferay.schizo.internal.store.PersonaStore;
@@ -52,7 +53,7 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 		String bio = ParamUtil.getString(actionRequest, "bio");
 		List<String> sites = Arrays.asList(ParamUtil.getString(actionRequest, "sites").split(","));
 
-		String dataContext = ParamUtil.getString(actionRequest,"dataContext", "{}");
+		String dataContext = ParamUtil.getString(actionRequest,"dataContext", Schizo.DEFAULT_DATA_CONTEXT);
 
 		if (screenName.isEmpty() || emailAddress.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
 			error(actionRequest, actionResponse, "profileFieldsEmpty");
