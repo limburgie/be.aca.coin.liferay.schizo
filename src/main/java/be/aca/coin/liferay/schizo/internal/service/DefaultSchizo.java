@@ -40,13 +40,13 @@ public class DefaultSchizo implements Schizo {
 		String screenName = getCurrentUserScreenName();
 
 		if (screenName == null) {
-			return null;
+			return Schizo.DEFAULT_DATA_CONTEXT;
 		}
 
 		try {
 			return personaStore.getPersona(screenName).getPrettyPrintedDataContext();
 		} catch (NoSuchPersonaException e) {
-			return null;
+			return Schizo.DEFAULT_DATA_CONTEXT;
 		}
 	}
 
