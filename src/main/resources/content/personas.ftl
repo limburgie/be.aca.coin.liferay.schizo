@@ -1,20 +1,19 @@
-<h3>Sign in as</h3>
-<#list schizoPersonas>
-    <ul>
+<#list schizo.personas>
+	<div class="row">
         <#items as persona>
-			<li>
-				<a href="${persona.loginUrl}">
-					<#if persona.portrait??>
-						<img src="${persona.portrait}" width="20" height="20"/>
-					</#if>
-					${persona.firstName}
-				</a>
-			</li>
+			<div class="col-md-2 text-center">
+				<div style="background: #BBCDCE; padding: 15px; border-radius: 5px">
+					<a href="${persona.loginUrl}">
+						<#if persona.portrait??>
+							<p>
+								<img src="${persona.portrait}" width="100%"/>
+							</p>
+						</#if>
+					</a>
+					<h3>${persona.firstName}</h3>
+					<small>${persona.bio}</small>
+				</div>
+			</div>
 		</#items>
-	</ul>
+	</div>
 </#list>
-
-<p>or <a href="/c/portal/logout">sign out</a>.</p>
-
-<h3>Current persona's data context</h3>
-<pre>${schizoDataContext!""}</pre>

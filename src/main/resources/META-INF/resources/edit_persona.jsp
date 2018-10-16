@@ -35,6 +35,10 @@
 							<label class="control-label" for="<portlet:namespace/>lastName">Last name</label>
 							<input class="form-control" id="<portlet:namespace/>lastName" name="<portlet:namespace/>lastName" value="${editMode ? persona.lastName : ''}"/>
 						</div>
+						<div class="form-group">
+							<label class="control-label" for="<portlet:namespace/>sites">Site memberships</label>
+							<input class="form-control" id="<portlet:namespace/>sites" name="<portlet:namespace/>sites" value="${editMode ? persona.concatenatedSites : ''}"/>
+						</div>
 					</fieldset>
 					<fieldset class="fieldset col-md-6">
 						<div class="form-group">

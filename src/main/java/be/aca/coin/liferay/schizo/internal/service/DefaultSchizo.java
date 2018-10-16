@@ -37,18 +37,36 @@ public class DefaultSchizo implements Schizo {
 	}
 
 	public String getDataContext() {
-		PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
+		String screenName = getCurrentUserScreenName();
 
-		if (!permissionChecker.isSignedIn()) {
+		if (screenName == null) {
 			return null;
 		}
-
-		String screenName = permissionChecker.getUser().getScreenName();
 
 		try {
 			return personaStore.getPersona(screenName).getPrettyPrintedDataContext();
 		} catch (NoSuchPersonaException e) {
 			return null;
 		}
+	}
+
+	public boolean isPersona() {
+		String screenName = getCurrentUserScreenName();
+
+		if (screenName == null) {
+			return false;
+		}
+
+		return personaStore.hasPersona(screenName);
+	}
+
+	private String getCurrentUserScreenName() {
+		PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
+
+		if (!permissionChecker.isSignedIn()) {
+			return null;
+		}
+
+		return permissionChecker.getUser().getScreenName();
 	}
 }

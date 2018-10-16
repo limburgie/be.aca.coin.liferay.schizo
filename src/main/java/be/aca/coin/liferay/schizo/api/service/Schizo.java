@@ -16,4 +16,9 @@ public interface Schizo {
 	 * If no user is signed in or if the currently signed in user is not a persona, null is returned.
 	 */
 	String getDataContext();
+
+	/**
+	 * Retrieves true if the currently logged in user is a persona.
+	 */
+	boolean isPersona();
 }

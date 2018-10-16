@@ -1,7 +1,10 @@
 package be.aca.coin.liferay.schizo.internal.domain;
 
+import java.util.List;
+
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.liferay.portal.kernel.util.StringUtil;
 
 public class PersonaDefinition {
 
@@ -11,6 +14,7 @@ public class PersonaDefinition {
 	private String lastName;
 	private String portrait;
 	private String bio;
+	private List<String> sites;
 	private JsonObject dataContext;
 
 	public String getPortraitWithoutMime() {
@@ -29,6 +33,10 @@ public class PersonaDefinition {
 
 	public String getPrettyPrintedDataContext() {
 		return new GsonBuilder().setPrettyPrinting().create().toJson(dataContext);
+	}
+
+	public String getConcatenatedSites() {
+		return StringUtil.merge(sites, ",");
 	}
 
 	public String getScreenName() {
@@ -77,6 +85,14 @@ public class PersonaDefinition {
 
 	public void setBio(String bio) {
 		this.bio = bio;
+	}
+
+	public List<String> getSites() {
+		return sites;
+	}
+
+	public void setSites(List<String> sites) {
+		this.sites = sites;
 	}
 
 	public JsonObject getDataContext() {
