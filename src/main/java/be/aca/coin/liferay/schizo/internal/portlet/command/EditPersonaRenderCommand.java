@@ -58,7 +58,7 @@ public class EditPersonaRenderCommand implements MVCRenderCommand {
 			renderRequest.setAttribute("editMode", false);
 		}
 
-		return "/edit_persona.jsp";
+		return "/control_panel/edit_persona.jsp";
 	}
 
 	private void enableBackButton(RenderRequest renderRequest, RenderResponse renderResponse) {
