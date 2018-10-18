@@ -48,4 +48,8 @@ public class SchizoSignInPortletDisplayTemplateHandler extends BasePortletDispla
 
 		return templateVariableGroups;
 	}
+
+	public String getTemplatesHelpPath(String language) {
+		return "be/aca/coin/liferay/schizo/internal/signin/adt/default." + language;
+	}
 }

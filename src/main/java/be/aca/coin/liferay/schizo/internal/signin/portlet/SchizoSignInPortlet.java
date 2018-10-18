@@ -35,7 +35,7 @@ public class SchizoSignInPortlet extends MVCPortlet {
 	public void render(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
 		renderRequest.setAttribute("displayStyle", getDisplayStyle(renderRequest));
 		renderRequest.setAttribute("contextObjects", getContextObjects());
-		renderRequest.setAttribute("entries", schizo.getPersonas());
+		renderRequest.setAttribute("personas", schizo.getPersonas());
 
 		super.render(renderRequest, renderResponse);
 	}

@@ -1,4 +1,4 @@
-package be.aca.coin.liferay.schizo.internal.signin.portlet.configaction;
+package be.aca.coin.liferay.schizo.internal.signin.portlet;
 
 import javax.portlet.*;
 
@@ -7,8 +7,6 @@ import org.osgi.service.component.annotations.*;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.ParamUtil;
-
-import be.aca.coin.liferay.schizo.internal.signin.portlet.SchizoSignInPortletConstants;
 
 @Component(
 		immediate = true,
