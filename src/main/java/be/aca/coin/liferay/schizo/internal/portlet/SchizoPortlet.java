@@ -24,7 +24,7 @@ import be.aca.coin.liferay.schizo.internal.store.PersonaStore;
 				"com.liferay.portlet.add-default-resource=true",
 				"com.liferay.portlet.display-category=category.hidden",
 				"javax.portlet.display-name=Personas",
-				"javax.portlet.init-param.view-template=/view.jsp",
+				"javax.portlet.init-param.view-template=/control_panel/view.jsp",
 				"javax.portlet.init-param.copy-request-parameters=true",
 				"javax.portlet.name=" + SchizoPortletConstants.PORTLET_NAME,
 				"javax.portlet.resource-bundle=content.Language",
