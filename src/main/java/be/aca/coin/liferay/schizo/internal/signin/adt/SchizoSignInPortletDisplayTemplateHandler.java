@@ -1,4 +1,4 @@
-package be.aca.coin.liferay.schizo.internal.signin;
+package be.aca.coin.liferay.schizo.internal.signin.adt;
 
 import java.util.List;
 import java.util.Locale;
@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.template.TemplateVariableGroup;
 
 import be.aca.coin.liferay.schizo.api.domain.Persona;
 import be.aca.coin.liferay.schizo.api.service.Schizo;
+import be.aca.coin.liferay.schizo.internal.signin.portlet.SchizoSignInPortletConstants;
 
 @Component(
 		immediate = true,
@@ -30,7 +31,7 @@ public class SchizoSignInPortletDisplayTemplateHandler extends BasePortletDispla
 	}
 
 	public String getName(Locale locale) {
-		return "Schizo";
+		return "Persona Sign In Template";
 	}
 
 	public String getResourceName() {

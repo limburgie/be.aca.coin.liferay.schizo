@@ -1,4 +1,4 @@
-<%@ include file="/init.jsp" %>
+<%@ include file="/control_panel/init.jsp" %>
 
 <portlet:actionURL name="/schizo/save_persona" var="savePersonaUrl"/>
 

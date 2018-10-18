@@ -1,4 +1,4 @@
-<%@ include file="/init.jsp" %>
+<%@ include file="/control_panel/init.jsp" %>
 
 <clay:navigation-bar inverted="${true}" navigationItems="${navItems}"/>
 
