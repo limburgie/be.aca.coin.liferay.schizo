@@ -31,8 +31,9 @@ public class DefaultSchizo implements Schizo {
 			String portrait = personaDefinition.getPortrait();
 			String bio = personaDefinition.getBio();
 			String loginUrl = String.format(LOGIN_URL_FORMAT, personaDefinition.getScreenName());
+			String dataContext = personaDefinition.getPrettyPrintedDataContext();
 
-			return new Persona(firstName, portrait, bio, loginUrl);
+			return new Persona(firstName, portrait, bio, loginUrl, dataContext);
 		}).collect(Collectors.toList());
 	}
 

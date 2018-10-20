@@ -6,12 +6,14 @@ public class Persona {
 	private String portrait;
 	private String bio;
 	private String loginUrl;
+	private String dataContext;
 
-	public Persona(String firstName, String portrait, String bio, String loginUrl) {
+	public Persona(String firstName, String portrait, String bio, String loginUrl, String dataContext) {
 		this.firstName = firstName;
 		this.portrait = portrait;
 		this.bio = bio;
 		this.loginUrl = loginUrl;
+		this.dataContext = dataContext;
 	}
 
 	public String getFirstName() {
@@ -28,5 +30,9 @@ public class Persona {
 
 	public String getLoginUrl() {
 		return loginUrl;
+	}
+
+	public String getDataContext() {
+		return dataContext;
 	}
 }

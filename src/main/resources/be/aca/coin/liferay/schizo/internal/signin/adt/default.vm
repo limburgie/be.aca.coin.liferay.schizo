@@ -8,6 +8,10 @@ Each Persona object has the following properties:
 - portrait (base64 representation)
 - bio
 - loginUrl
+- dataContext (JSON string)
+
+Use $jsonFactoryUtil.createJSONObject($persona.dataContext)
+to easily access data context values.
 *#
 
 #*
