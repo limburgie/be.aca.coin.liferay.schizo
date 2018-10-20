@@ -15,6 +15,7 @@ public class PersonaDefinition {
 	private String portrait;
 	private String bio;
 	private List<String> sites;
+	private List<String> roles;
 	private JsonObject dataContext;
 
 	public String getPortraitWithoutMime() {
@@ -36,7 +37,11 @@ public class PersonaDefinition {
 	}
 
 	public String getConcatenatedSites() {
-		return StringUtil.merge(sites, ",");
+		return StringUtil.merge(sites, "\r\n");
+	}
+
+	public String getConcatenatedRoles() {
+		return StringUtil.merge(roles, "\r\n");
 	}
 
 	public String getScreenName() {
@@ -93,6 +98,14 @@ public class PersonaDefinition {
 
 	public void setSites(List<String> sites) {
 		this.sites = sites;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 	public JsonObject getDataContext() {

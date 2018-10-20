@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import be.aca.coin.liferay.schizo.api.service.Schizo;
 import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
@@ -51,7 +52,8 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 		String lastName = ParamUtil.getString(actionRequest, "lastName");
 		String portrait = ParamUtil.getString(actionRequest, "portrait");
 		String bio = ParamUtil.getString(actionRequest, "bio");
-		List<String> sites = Arrays.asList(ParamUtil.getString(actionRequest, "sites").split(","));
+		List<String> sites = Arrays.asList(ParamUtil.getString(actionRequest, "sites").split("\\r?\\n"));
+		List<String> roles = Arrays.asList(ParamUtil.getString(actionRequest, "roles").split("\\r?\\n"));
 
 		String dataContext = ParamUtil.getString(actionRequest,"dataContext", Schizo.DEFAULT_DATA_CONTEXT);
 
@@ -70,6 +72,7 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 			persona.setPortrait(portrait);
 			persona.setBio(bio);
 			persona.setSites(sites);
+			persona.setRoles(roles);
 			persona.setDataContext(new Gson().fromJson(dataContext, JsonObject.class));
 
 			personaStore.savePersona(oldScreenName, persona);
