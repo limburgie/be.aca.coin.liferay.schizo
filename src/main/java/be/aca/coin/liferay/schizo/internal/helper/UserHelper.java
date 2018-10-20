@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -29,6 +30,7 @@ public class UserHelper {
 	@Reference private Portal portal;
 	@Reference private UserLocalService userLocalService;
 	@Reference private GroupLocalService groupLocalService;
+	@Reference private RoleLocalService roleLocalService;
 
 	public User getOrCreateUser(HttpServletRequest request, PersonaDefinition persona) throws PortalException {
 		long companyId = portal.getCompanyId(request);
@@ -60,7 +62,7 @@ public class UserHelper {
 					null,
 					getGroupIds(persona.getSites(), companyId),
 					new long[0],
-					new long[0],
+					getRoleIds(persona.getRoles(), companyId),
 					new long[0],
 					false,
 					new ServiceContext()
@@ -86,6 +88,22 @@ public class UserHelper {
 			for (String siteName : siteNames) {
 				try {
 					result = ArrayUtil.append(result, groupLocalService.getGroup(companyId, siteName).getGroupId());
+				} catch (PortalException e) {
+					LOGGER.error(e);
+				}
+			}
+		}
+
+		return result;
+	}
+
+	private long[] getRoleIds(List<String> roleNames, long companyId) {
+		long[] result = new long[0];
+
+		if (roleNames != null) {
+			for (String roleName : roleNames) {
+				try {
+					result = ArrayUtil.append(result, roleLocalService.getRole(companyId, roleName).getRoleId());
 				} catch (PortalException e) {
 					LOGGER.error(e);
 				}
