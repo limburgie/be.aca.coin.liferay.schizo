@@ -6,6 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import be.aca.coin.liferay.schizo.api.service.Schizo;
+
 public class PersonaDefinition {
 
 	private String screenName;
@@ -33,7 +35,7 @@ public class PersonaDefinition {
 	}
 
 	public String getPrettyPrintedDataContext() {
-		return new GsonBuilder().setPrettyPrinting().create().toJson(dataContext);
+		return dataContext == null ? Schizo.DEFAULT_DATA_CONTEXT : new GsonBuilder().setPrettyPrinting().create().toJson(dataContext);
 	}
 
 	public String getConcatenatedSites() {

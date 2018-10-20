@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import be.aca.coin.liferay.schizo.internal.configuration.SchizoConfiguration;
 import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
 import be.aca.coin.liferay.schizo.internal.store.PersonaStore;
-import be.aca.coin.liferay.schizo.internal.store.exception.CannotSavePersonaException;
+import be.aca.coin.liferay.schizo.internal.store.exception.PersonaStorageException;
 import be.aca.coin.liferay.schizo.internal.store.exception.NoSuchPersonaException;
 
 @Component(
@@ -55,11 +55,11 @@ public class PersonaConfigurationStore implements PersonaStore {
 	}
 
 	public List<PersonaDefinition> getPersonas() {
-		return new ArrayList<>(personaMap.values());
+		return new ArrayList<>(getPersonaMap().values());
 	}
 
 	public PersonaDefinition getPersona(String screenName) throws NoSuchPersonaException {
-		PersonaDefinition persona = personaMap.get(screenName);
+		PersonaDefinition persona = getPersonaMap().get(screenName);
 
 		if (persona == null) {
 			throw new NoSuchPersonaException();
@@ -72,14 +72,20 @@ public class PersonaConfigurationStore implements PersonaStore {
 		return personaMap.containsKey(screenName);
 	}
 
-	public void savePersona(String screenName, PersonaDefinition persona) throws CannotSavePersonaException {
-		Map<String, PersonaDefinition> personaMap = new LinkedHashMap<>(this.personaMap);
+	public void savePersona(String screenName, PersonaDefinition persona) throws PersonaStorageException {
+		Map<String, PersonaDefinition> personaMap = getPersonaMap();
 
 		personaMap.put(screenName, persona);
-
 		savePersonaMap(personaMap);
 
-		dirty = true;
+		waitForConfigurationUpdate();
+	}
+
+	public void deletePersona(String screenName) throws PersonaStorageException {
+		Map<String, PersonaDefinition> personaMap = getPersonaMap();
+
+		personaMap.remove(screenName);
+		savePersonaMap(personaMap);
 
 		waitForConfigurationUpdate();
 	}
@@ -95,7 +101,7 @@ public class PersonaConfigurationStore implements PersonaStore {
 		}
 	}
 
-	private void savePersonaMap(Map<String, PersonaDefinition> personaMap) throws CannotSavePersonaException {
+	private void savePersonaMap(Map<String, PersonaDefinition> personaMap) throws PersonaStorageException {
 		String[] personaDefinitions = new String[0];
 
 		Gson gson = new Gson();
@@ -109,8 +115,13 @@ public class PersonaConfigurationStore implements PersonaStore {
 
 		try {
 			configurationProvider.saveSystemConfiguration(SchizoConfiguration.class, properties);
+			dirty = true;
 		} catch (ConfigurationException e) {
-			throw new CannotSavePersonaException(e);
+			throw new PersonaStorageException(e);
 		}
+	}
+
+	private Map<String, PersonaDefinition> getPersonaMap() {
+		return new LinkedHashMap<>(personaMap);
 	}
 }

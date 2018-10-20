@@ -11,6 +11,7 @@
 
 <div class="container">
 	<liferay-ui:success key="personaSaved" message="Persona was successfully saved."/>
+	<liferay-ui:success key="personaDeleted" message="Persona was successfully deleted."/>
 
 	<c:choose>
 		<c:when test="${!empty personaStore.personas}">

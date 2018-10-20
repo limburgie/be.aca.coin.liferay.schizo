@@ -3,7 +3,7 @@ package be.aca.coin.liferay.schizo.internal.store;
 import java.util.List;
 
 import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
-import be.aca.coin.liferay.schizo.internal.store.exception.CannotSavePersonaException;
+import be.aca.coin.liferay.schizo.internal.store.exception.PersonaStorageException;
 import be.aca.coin.liferay.schizo.internal.store.exception.NoSuchPersonaException;
 
 /**
@@ -29,7 +29,13 @@ public interface PersonaStore {
 
 	/**
 	 * Stores the persona definition under the given screen name.
-	 * @throws CannotSavePersonaException if a problem occurs while saving the persona.
+	 * @throws PersonaStorageException if a problem occurs while saving the persona.
 	 */
-	void savePersona(String screenName, PersonaDefinition persona) throws CannotSavePersonaException;
+	void savePersona(String screenName, PersonaDefinition persona) throws PersonaStorageException;
+
+	/**
+	 * Removes the persona definition with the given screen name.
+	 * @throws PersonaStorageException if a problem occurs while deleting the persona.
+	 */
+	void deletePersona(String screenName) throws PersonaStorageException;
 }

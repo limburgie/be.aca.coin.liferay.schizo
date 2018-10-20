@@ -20,13 +20,12 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import be.aca.coin.liferay.schizo.api.service.Schizo;
 import be.aca.coin.liferay.schizo.internal.domain.PersonaDefinition;
 import be.aca.coin.liferay.schizo.internal.portlet.SchizoPortletConstants;
 import be.aca.coin.liferay.schizo.internal.store.PersonaStore;
-import be.aca.coin.liferay.schizo.internal.store.exception.CannotSavePersonaException;
+import be.aca.coin.liferay.schizo.internal.store.exception.PersonaStorageException;
 
 @Component(
 		immediate = true,
@@ -79,7 +78,7 @@ public class SavePersonaActionCommand extends BaseMVCActionCommand {
 			SessionMessages.add(actionRequest, "personaSaved");
 		} catch (JsonSyntaxException e) {
 			error(actionRequest, actionResponse, "invalidJson");
-		} catch (CannotSavePersonaException e) {
+		} catch (PersonaStorageException e) {
 			LOGGER.error(e);
 			error(actionRequest, actionResponse, "personaNotSaved");
 		}

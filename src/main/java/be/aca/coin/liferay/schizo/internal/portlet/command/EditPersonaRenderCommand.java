@@ -36,30 +36,42 @@ public class EditPersonaRenderCommand implements MVCRenderCommand {
 
 		String screenName = renderRequest.getParameter("schizo");
 
-		try {
-			PersonaDefinition persona = personaStore.getPersona(screenName);
-
+		if (screenName == null) {
 			if (ParamUtil.getBoolean(renderRequest, "error")) {
-				persona.setScreenName(renderRequest.getParameter("screenName"));
-				persona.setEmailAddress(renderRequest.getParameter("emailAddress"));
-				persona.setFirstName(renderRequest.getParameter("firstName"));
-				persona.setLastName(renderRequest.getParameter("lastName"));
-				persona.setPortrait(renderRequest.getParameter("portrait"));
-				persona.setBio(renderRequest.getParameter("bio"));
-				persona.setSites(Arrays.asList(renderRequest.getParameter("sites").split("\\r?\\n")));
-				persona.setRoles(Arrays.asList(renderRequest.getParameter("roles").split("\\r?\\n")));
+				PersonaDefinition persona = new PersonaDefinition();
+				enrich(persona, renderRequest);
+				setAttributes(renderRequest, persona, "Add persona", true);
+			} else {
+				setAttributes(renderRequest, null, "Add persona", false);
+			}
+		} else {
+			PersonaDefinition persona;
+
+			try {
+				persona = personaStore.getPersona(screenName);
+			} catch (NoSuchPersonaException e) {
+				persona = new PersonaDefinition();
 			}
 
-			renderRequest.setAttribute("persona", persona);
-			renderRequest.setAttribute("title", "Edit persona " + persona.getFirstName());
-			renderRequest.setAttribute("editMode", true);
-		} catch (NoSuchPersonaException e) {
-			renderRequest.setAttribute("persona", null);
-			renderRequest.setAttribute("title", "Add persona");
-			renderRequest.setAttribute("editMode", false);
+			if (ParamUtil.getBoolean(renderRequest, "error")) {
+				enrich(persona, renderRequest);
+			}
+
+			setAttributes(renderRequest, persona, "Edit persona " + persona.getFirstName(), true);
 		}
 
 		return "/control_panel/edit_persona.jsp";
+	}
+
+	private void enrich(PersonaDefinition persona, RenderRequest renderRequest) {
+		persona.setScreenName(renderRequest.getParameter("screenName"));
+		persona.setEmailAddress(renderRequest.getParameter("emailAddress"));
+		persona.setFirstName(renderRequest.getParameter("firstName"));
+		persona.setLastName(renderRequest.getParameter("lastName"));
+		persona.setPortrait(renderRequest.getParameter("portrait"));
+		persona.setBio(renderRequest.getParameter("bio"));
+		persona.setSites(Arrays.asList(renderRequest.getParameter("sites").split("\\r?\\n")));
+		persona.setRoles(Arrays.asList(renderRequest.getParameter("roles").split("\\r?\\n")));
 	}
 
 	private void enableBackButton(RenderRequest renderRequest, RenderResponse renderResponse) {
@@ -68,5 +80,11 @@ public class EditPersonaRenderCommand implements MVCRenderCommand {
 
 		portletDisplay.setShowBackIcon(true);
 		portletDisplay.setURLBack(renderResponse.createRenderURL().toString());
+	}
+
+	private void setAttributes(RenderRequest renderRequest, PersonaDefinition persona, String title, boolean editMode) {
+		renderRequest.setAttribute("persona", persona);
+		renderRequest.setAttribute("title", title);
+		renderRequest.setAttribute("editMode", editMode);
 	}
 }
