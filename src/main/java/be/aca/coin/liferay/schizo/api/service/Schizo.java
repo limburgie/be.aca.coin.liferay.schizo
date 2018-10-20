@@ -6,7 +6,7 @@ import be.aca.coin.liferay.schizo.api.domain.Persona;
 
 public interface Schizo {
 
-	public static final String DEFAULT_DATA_CONTEXT = "{}";
+	String DEFAULT_DATA_CONTEXT = "{}";
 
 	/**
 	 * Retrieves a list of all personas. Personas are ordered as configured.
