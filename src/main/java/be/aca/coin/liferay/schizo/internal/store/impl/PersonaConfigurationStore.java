@@ -42,7 +42,7 @@ public class PersonaConfigurationStore implements PersonaStore {
 
 		SchizoConfiguration schizoConfiguration = ConfigurableUtil.createConfigurable(SchizoConfiguration.class, properties);
 
-		if (schizoConfiguration != null) {
+		if (schizoConfiguration != null && schizoConfiguration.personaDefinitions() != null) {
 			for (String definitionJson : schizoConfiguration.personaDefinitions()) {
 				if (definitionJson != null && !definitionJson.isEmpty()) {
 					PersonaDefinition personaDefinition = new Gson().fromJson(definitionJson, PersonaDefinition.class);
