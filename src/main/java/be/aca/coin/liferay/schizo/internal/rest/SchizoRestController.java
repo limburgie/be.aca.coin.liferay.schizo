@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.util.Portal;
 
-import be.aca.coin.liferay.schizo.api.domain.Persona;
 import be.aca.coin.liferay.schizo.api.service.Schizo;
 
 @Component(
@@ -41,13 +40,6 @@ public class SchizoRestController extends Application {
 	@Reference private Schizo schizo;
 	@Reference private PermissionCheckerFactory permissionCheckerFactory;
 	@Reference private Portal portal;
-
-	@GET
-	@Path("/personas")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Persona> getPersonas() {
-		return schizo.getPersonas();
-	}
 
 	@GET
 	@Path("/data-context")
@@ -86,6 +78,11 @@ public class SchizoRestController extends Application {
 	}
 
 	public Set<Object> getSingletons() {
-		return Collections.singleton(new JacksonJsonProvider());
+		Set<Object> singletons = new HashSet<>();
+
+		singletons.add(new JacksonJsonProvider());
+		singletons.add(new PersonasResource(schizo));
+
+		return singletons;
 	}
 }
