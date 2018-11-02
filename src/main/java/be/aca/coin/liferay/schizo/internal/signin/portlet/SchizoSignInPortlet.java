@@ -35,6 +35,7 @@ public class SchizoSignInPortlet extends MVCPortlet {
 	public void render(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
 		renderRequest.setAttribute("displayStyle", getDisplayStyle(renderRequest));
 		renderRequest.setAttribute("contextObjects", getContextObjects());
+		renderRequest.setAttribute("schizo", schizo);
 		renderRequest.setAttribute("personas", schizo.getPersonas());
 
 		super.render(renderRequest, renderResponse);
@@ -42,6 +43,7 @@ public class SchizoSignInPortlet extends MVCPortlet {
 
 	private Map<String, Object> getContextObjects() {
 		Map<String, Object> result = new HashMap<>();
+		result.put("schizo", schizo);
 		result.put("personas", schizo.getPersonas());
 
 		return result;

@@ -15,31 +15,36 @@ to easily access data context values.
 *#
 
 #*
-#if (!$schizo.personas.empty)
-    <div class="row">
-        #foreach ($persona in $schizo.personas)
-            <div class="col-md-2 text-center">
-                <div class="card">
-                    <a href="$persona.loginUrl">
-                        #if ($persona.portrait && !$persona.portrait.empty)
-                            <img src="${persona.portrait}" width="100%"/>
-                        #else
-                            <img src="/image/user_male_portrait" width="100%"/>
-                        #end
-                    </a>
-                    <div class="card-row card-row-padded card-row-valign-top">
-                        <div class="card-col-content">
-                            <h3 class="text-center">
-                                <a href="$persona.loginUrl">$persona.firstName</a>
-                            </h3>
-                            <p class="lfr-card-subtitle-text">$persona.bio</p>
+#if ($themeDisplay.signedIn)
+    <p>You are signed in as #if ($schizo.persona) persona #else real user #end <a href="$themeDisplay.URLMyAccount">$themeDisplay.user.fullName</a>.</p>
+	<a class="btn btn-default" href="$themeDisplay.URLSignOut">Sign out</a>
+#else
+    #if (!$schizo.personas.empty)
+        <div class="row">
+            #foreach ($persona in $schizo.personas)
+                <div class="col-md-2 text-center">
+                    <div class="card">
+                        <a href="$persona.loginUrl">
+                            #if ($persona.portrait && !$persona.portrait.empty)
+                                <img src="${persona.portrait}" width="100%"/>
+                            #else
+                                <img src="/image/user_male_portrait" width="100%"/>
+                            #end
+                        </a>
+                        <div class="card-row card-row-padded card-row-valign-top">
+                            <div class="card-col-content">
+                                <h3 class="text-center">
+                                    <a href="$persona.loginUrl">$persona.firstName</a>
+                                </h3>
+                                <p class="lfr-card-subtitle-text">$persona.bio</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        #end
-    </div>
-#else
-    <p>No personas were defined.</p>
+            #end
+        </div>
+    #else
+        <p>No personas were defined.</p>
+    #end
 #end
 *#

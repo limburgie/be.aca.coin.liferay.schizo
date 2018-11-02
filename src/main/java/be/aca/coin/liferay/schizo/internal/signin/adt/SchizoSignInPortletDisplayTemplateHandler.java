@@ -44,6 +44,7 @@ public class SchizoSignInPortletDisplayTemplateHandler extends BasePortletDispla
 		TemplateVariableGroup fields = templateVariableGroups.get("fields");
 		fields.empty();
 
+		fields.addVariable("Schizo", Schizo.class, "schizo");
 		fields.addCollectionVariable("Personas", List.class, "personas", "Persona", Persona.class, "persona", "firstName");
 
 		return templateVariableGroups;
