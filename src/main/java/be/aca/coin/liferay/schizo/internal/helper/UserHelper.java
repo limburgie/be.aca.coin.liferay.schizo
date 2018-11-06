@@ -86,10 +86,14 @@ public class UserHelper {
 
 		if (siteNames != null) {
 			for (String siteName : siteNames) {
+				if (siteName == null || siteName.trim().isEmpty()) {
+					continue;
+				}
+
 				try {
 					result = ArrayUtil.append(result, groupLocalService.getGroup(companyId, siteName).getGroupId());
 				} catch (PortalException e) {
-					LOGGER.error(e);
+					LOGGER.warn(e);
 				}
 			}
 		}
@@ -102,10 +106,14 @@ public class UserHelper {
 
 		if (roleNames != null) {
 			for (String roleName : roleNames) {
+				if (roleName == null || roleName.trim().isEmpty()) {
+					continue;
+				}
+
 				try {
 					result = ArrayUtil.append(result, roleLocalService.getRole(companyId, roleName).getRoleId());
 				} catch (PortalException e) {
-					LOGGER.error(e);
+					LOGGER.warn(e);
 				}
 			}
 		}
