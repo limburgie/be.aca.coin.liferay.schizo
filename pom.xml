@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>be.aca.coin.liferay</groupId>
 	<artifactId>be.aca.coin.liferay.schizo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0.0</version>
 
 	<name>Schizo.io</name>
 	<description>Persona based testing framework for Liferay</description>
+	<url>https://github.com/limburgie/be.aca.coin.liferay.schizo</url>
 	<packaging>bundle</packaging>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -176,4 +182,20 @@
 			<version>2.8.5</version>
 		</dependency>
 	</dependencies>
+
+	<scm>
+		<connection>scm:git:git://github.com/limburgie/be.aca.coin.liferay.schizo.git</connection>
+		<developerConnection>scm:git:ssh://github.com:limburgie/be.aca.coin.liferay.schizo.git</developerConnection>
+		<url>http://github.com/limburgie/be.aca.coin.liferay.schizo/tree/master</url>
+	  <tag>1.0.0.0</tag>
+  </scm>
+
+	<developers>
+		<developer>
+			<name>Peter Mesotten</name>
+			<email>peter.mesotten@aca-it.be</email>
+			<organization>ACA IT-Solutions</organization>
+			<organizationUrl>http://www.aca-it.be</organizationUrl>
+		</developer>
+	</developers>
 </project>
